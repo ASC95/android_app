@@ -14,7 +14,11 @@ Home
 -The home screen will contain a grid available locations with a thumbnail photo of the most recently verified picture, the title of that location, and the timestamp of the photo. 
 -Four tabs will appear at the top of the screen, which group different locations by type (Food, Study, Vision)
 -Clicking on the thumbnail photo will bring that user to a "details" page for that location, which includes a larger version of the image, a static description of relevant info like hours/location, and a verify tab for approving/reporting unverified pictures.
--A post button will also be included at the bottom of the page (above the Android nav bar) in the case that users wish to post but have already dismissed the post notification.
+-A settings button will also be included at the bottom of the page (above the Android nav bar)in the case that users wish to post but have already dismissed the post notification. Or for users to modify specific user settings or refresh the feed.
+
+Home - Settings
+-This is a simple settings button at the bottom of our home page above the android navbar.
+it provides options such as modifying user settings (themes, coming soon), refreshing the tile feed, and the option to post
 
 Home - Post Notice
 -An alarm window will pop-up if the user is within a certain radius of one of the locations monitored.
@@ -33,6 +37,6 @@ Detail Page
 -Also shows relevant information like hours of operation for the specific location
 -At the top a tab called "verify" exists, which when clicked opens a verify page, where users can approve/dissaprove/report pending verified pictures of the location
 
-Verify Page
+New Page
 -Contains new unverified pictures of the location, which users can vote on based on relevancy/usefulness
 -If a new image reaches a certain threshold of votes (TBD) it will replace the thumbnail and the current detailed image
