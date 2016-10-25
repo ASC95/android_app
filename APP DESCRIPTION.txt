@@ -7,3 +7,29 @@ Group members:
 App Description:
 
 	The purpose of this app is to provide a way for students to check the line/crowds at their favorite dining option/study space/gym. The app allows users to post pictures of certain areas (say, for instance, the line outside of the Einstein Bagel's at Rice) for other users to view and get a sense of what the crowd is like at that area at a specific point in time. GPS coordinates and a moderator system will verify that 1)Posters of pictures are at the location they say they are and 2)The picture posted is appropriate and useful for other users intending to check the crowd of that area. Images will be be hosted using some image hosting web service (considering both Imgur and Flickr at the moment).
+
+Wire Frame Description:
+
+Home 
+-The home screen will contain a grid available locations with a thumbnail photo of the most recently verified picture, the title of that location, and the timestamp of the photo. 
+-Four tabs will appear at the top of the screen, which group different locations by type (Food, Study, Vision)
+-Clicking on the thumbnail photo will bring that user to a "details" page for that location, which includes a larger version of the image, a static description of relevant info like hours/location, and a verify tab for approving/reporting unverified pictures.
+-A post button will also be included at the bottom of the page (above the Android nav bar) in the case that users wish to post but have already dismissed the post notification.
+
+Home - Post Notice
+-An alarm window will pop-up if the user is within a certain radius of one of the locations monitored.
+-This alarm will prompt the user to either post a picture (which brings them to the post activity/screen and pulls up the camera) or cancel to dismiss the notification 
+
+Post
+-This screen pulls the users camera up. This is where user will take a picture of the line/crowd if they are within a radius of the appropriate location.
+-Taking a picture will pop-up the Post - confirm notification.
+
+Post - Confirm
+-After the user takes the picture they are prompted with an alarm window to either confirm and submit the picture for verification or to cancel the post process
+-Both options return the user to the home screen, but selecting cancel does not submit the photo for verification 
+
+Detail Page
+-
+
+Verify Page
+-
