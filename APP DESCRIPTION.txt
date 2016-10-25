@@ -37,6 +37,9 @@ Detail Page
 -Also shows relevant information like hours of operation for the specific location
 -At the top a tab called "verify" exists, which when clicked opens a verify page, where users can approve/dissaprove/report pending verified pictures of the location
 
-New Page
+New Page 
 -Contains new unverified pictures of the location, which users can vote on based on relevancy/usefulness
 -If a new image reaches a certain threshold of votes (TBD) it will replace the thumbnail and the current detailed image
+
+New Page - Notice
+-Another alert to ask for user confirmation on their vote/report of a new unverified image
