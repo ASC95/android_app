@@ -1,0 +1,9 @@
+Milestone 1 Submission
+Team Name: Unknown
+Group members:
+	Nathan Blaine (ngb2zf)
+	Austin Chang (asc7kc)
+
+App Description:
+
+	The purpose of this app is to provide a way for students to check the line/crowds at their favorite dining option/study space/gym. The app allows users to post pictures of certain areas (say, for instance, the line outside of the Einstein Bagel's at Rice) for other users to view and get a sense of what the crowd is like at that area at a specific point in time. GPS coordinates and a moderator system will verify that 1)Posters of pictures are at the location they say they are and 2)The picture posted is appropriate and useful for other users intending to check the crowd of that area. Images will be be hosted using some image hosting web service (considering both Imgur and Flickr at the moment).
