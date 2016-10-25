@@ -29,7 +29,10 @@ Post - Confirm
 -Both options return the user to the home screen, but selecting cancel does not submit the photo for verification 
 
 Detail Page
--
+-Shows a larger image of the thumbnail photo (the approved, most recent photo of the location)
+-Also shows relevant information like hours of operation for the specific location
+-At the top a tab called "verify" exists, which when clicked opens a verify page, where users can approve/dissaprove/report pending verified pictures of the location
 
 Verify Page
--
+-Contains new unverified pictures of the location, which users can vote on based on relevancy/usefulness
+-If a new image reaches a certain threshold of votes (TBD) it will replace the thumbnail and the current detailed image
