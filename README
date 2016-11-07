@@ -1,1 +1,16 @@
-This is a readme. Dope.
+Milestone 2 Submission - Due: Monday, November 7 @ 11:55 PM
+App Requirements:
+
+Show some basic interface with a third-party web service or your own created web service (does not have to be the final web service implementation)
+
+	-We interface with a cloud image hosting site called cloudinary. Images are stored and loaded from the cloud
+
+
+At least one screen loads
+	-the main screen and a settings screen both load
+
+Local data storage should be obviously in progress
+	-store username in sharedPreferences
+
+Obvious progress towards your user requirements
+	-yes
