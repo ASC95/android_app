@@ -1,47 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/usernameDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"/>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent">
+        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_weight="1"
-            android:layout_width="match_parent"
+        <fragment
+            android:id="@+id/topLeft"
+            android:name="com.example.austinchang.mobileproject.BlankFragment"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/pizza"/>
-
-        <ImageView
             android:layout_weight="1"
-            android:src="@drawable/pizza"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            tools:layout="@layout/fragment_blank" />
+
+        <fragment
+            android:id="@+id/topRight"
+            android:name="com.example.austinchang.mobileproject.BlankFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:layout="@layout/fragment_blank" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent">
+        android:orientation="horizontal">
 
-        <ImageView
+        <fragment
+            android:id="@+id/bottomLeft"
+            android:name="com.example.austinchang.mobileproject.BlankFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/pizza"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            tools:layout="@layout/fragment_blank" />
 
-        <ImageView
+        <fragment
+            android:id="@+id/bottomRight"
+            android:name="com.example.austinchang.mobileproject.BlankFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/pizza"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            tools:layout="@layout/fragment_blank" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/postPicture"
+            android:layout_centerHorizontal="true"
+            />
+
+        <Button
+            android:id="@+id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
 
 
 </LinearLayout>
+<!--If you find yourself using several nested linear layouts, you may be able to replace them
+with a relative layout-->
