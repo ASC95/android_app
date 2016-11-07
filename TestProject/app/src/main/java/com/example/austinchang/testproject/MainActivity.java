@@ -9,12 +9,15 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    /* Happens exactly once in the application lifecycle */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.settingsButton).setOnClickListener(this);
+
+        TextView textView = (TextView) findViewById(R.id.usernameDisplay);
+        textView.setText("On Create was just called");
+
     }
 
     @Override
@@ -24,16 +27,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * Restore preferences from the shared preferences file
+     * Restore preferences from the shared preferences file. It is getting called!
      */
     @Override
     protected void onResume() {
         super.onResume();
-        // Restore preferences
+
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         String name = settings.getString("username", "defaultName");
         TextView textView = (TextView) findViewById(R.id.usernameDisplay);
         textView.setText(name);
+    }
+
+    /**
+     * This changes the text, but the text goes back to the hint when I return. Why is that?
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        TextView textView = (TextView) findViewById(R.id.usernameDisplay);
+        textView.setText("On Pause was just called");
     }
 
     /* Called when the user clicks the Send button

@@ -35,4 +35,16 @@ public class SettingsActivity extends AppCompatActivity {
         // Commit the edits!
         editor.commit();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        EditText editText = (EditText) findViewById(R.id.editText);
+        editor.putString("username", editText.getText().toString());
+        // Commit the edits!
+        editor.commit();
+    }
 }
