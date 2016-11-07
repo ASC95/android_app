@@ -14,10 +14,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.settingsButton).setOnClickListener(this);
-
-        TextView textView = (TextView) findViewById(R.id.usernameDisplay);
-        textView.setText("On Create was just called");
-
     }
 
     @Override
@@ -33,8 +29,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
 
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        String name = settings.getString("username", "defaultName");
+        SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        String name = settings.getString("username", "DefaultName");
         TextView textView = (TextView) findViewById(R.id.usernameDisplay);
         textView.setText(name);
     }
@@ -45,9 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-
-        TextView textView = (TextView) findViewById(R.id.usernameDisplay);
-        textView.setText("On Pause was just called");
     }
 
     /* Called when the user clicks the Send button

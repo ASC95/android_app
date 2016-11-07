@@ -28,7 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onPause();
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         EditText editText = (EditText) findViewById(R.id.editText);
         editor.putString("username", editText.getText().toString());
@@ -39,12 +39,5 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        EditText editText = (EditText) findViewById(R.id.editText);
-        editor.putString("username", editText.getText().toString());
-        // Commit the edits!
-        editor.commit();
     }
 }
