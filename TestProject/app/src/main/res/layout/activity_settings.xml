@@ -16,4 +16,13 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:hint="Enter your username"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Username"
+        android:id="@+id/save_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="96dp" />
 </RelativeLayout>
