@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
+    TextView welcomeUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,25 +18,36 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_settings);
 
         findViewById(R.id.save_button).setOnClickListener(this);
+        findViewById(R.id.cancel_button).setOnClickListener(this);
 
-        /*
-        //Intent intent = getIntent();
-        //String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        TextView textView = new TextView(this);
-        textView.setTextSize(40);
-        textView.setText("hello");
+        welcomeUser = (TextView)findViewById(R.id.textView);
+        SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        String name = settings.getString("username", "DefaultName");
+        welcomeUser.setText("Welcome back, "+name+"!");
 
-        ViewGroup layout = (ViewGroup) findViewById(R.id.activity_settings);
-        layout.addView(textView);
-        */
+
+
+
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
+        switch (v.getId()) {
+            case R.id.save_button:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
 
+            case R.id.cancel_button:
+                Intent intent2 = new Intent(this, MainActivity.class);
+                startActivity(intent2);
+                break;
+
+
+            default:
+                break;
+        }
+    }
 
     @Override
     protected void onPause() {
@@ -42,10 +56,21 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         // All objects are from android.context.Context
         SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
+        String old_Name = settings.getString("username","");
+
         EditText editText = (EditText) findViewById(R.id.editText);
-        editor.putString("username", editText.getText().toString());
-        // Commit the edits!
-        editor.commit();
+//        Toast.makeText(SettingsActivity.this, "["+editText.getText().toString()+"]",
+//                Toast.LENGTH_LONG).show();
+        if(editText.getText().toString()== "") {
+            editor.putString("username", old_Name.toString());
+            // Commit the edits!
+            editor.commit();
+        }
+        else{
+            editor.putString("username", editText.getText().toString());
+            // Commit the edits!
+            editor.commit();
+        }
     }
 
     @Override
