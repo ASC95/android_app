@@ -39,10 +39,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected List<Place> mGeofenceList = new ArrayList<Place>();
     static final float RADIUS = 20;
 
+//    static int loadCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//
+//        if(loadCount==0){
+//            Intent intent = new Intent(this, permissionsActicity.class);
+//            startActivity(intent);
+//        }
+//        loadCount++;
         setContentView(R.layout.activity_main);
+
+
 
         //Buttons
         findViewById(R.id.settingsButton).setOnClickListener(this);
@@ -129,8 +138,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         catch(SecurityException e){
-            Toast.makeText(MainActivity.this, e.getMessage(),
-                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(MainActivity.this, e.getMessage(),
+//                    Toast.LENGTH_LONG).show();
 
 
         }
@@ -259,6 +268,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            // 3 is access fineLocation i think
+            case 3: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Intent intent = new Intent(this, permissionsActicity.class);
+                    startActivity(intent);
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
 
 
 }

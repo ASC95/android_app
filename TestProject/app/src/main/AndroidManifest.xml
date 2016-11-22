@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.austinchang.testproject">
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,13 +16,14 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" /> <!-- defines main activity -->
-                <category android:name="android.intent.category.LAUNCHER" /> <!-- defines main activity -->
+                <action android:name="android.intent.action.MAIN" />
+                <!-- defines main activity -->
+                <category android:name="android.intent.category.LAUNCHER" />
+                <!-- defines main activity -->
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity"></activity>
-
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".permissionsActicity"></activity>
     </application>
 
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
 </manifest>
