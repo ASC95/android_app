@@ -1,16 +1,37 @@
-Milestone 2 Submission - Due: Monday, November 7 @ 11:55 PM
+Milestone 3 Submission - Due: Monday, November 21 @ 11:55 PM
 App Requirements:
 
-Show some basic interface with a third-party web service or your own created web service (does not have to be the final web service implementation)
+Previous requirements still work
+-you know it
 
-	-We interface with a cloud image hosting site called cloudinary. Images are stored and loaded from the cloud
+GPS must be implemented
+-Ok so here is the deal with that:
+  -For some odd reason our device is updated to API level 23 (6.0.0 Marhsmallow) and NOT the API 22 5.1.1 as specified on the 
+    Android project page of the course site. 
+  -This issue is causing all sorts of problems which require granting of permissions at runtime. Though in our code we check for
+    Our location permission BEFORE connecting to the GoogleApiClient, it seems to to do the two at the same time, causing the first 
+    Instance of the App to have issues functioning because the required location permission can physically not be granted before
+    It tries to connect to the API.
+  -The current workaround for us is as follows.
+    1)Download and install app. Accept permission for location
+    2)Close App
+    3)Re-open App. Now permissions will be granted and the app will function correctly
+  -Everyone I have talked to (including the TA's) say they have their device at 6.0.0 so I cannot test if 5.1.1 will ask at install
+    Rather than during runtime (according to https://developer.android.com/training/permissions/requesting.html, under the requesting
+    At runtime section, which says "If the device is running Android 5.1 or lower, or your app's target SDK is 22 or lower: If you 
+    list a dangerous permission in your manifest, the user has to grant the permission when they install the app; 
+    if they do not grant the permission, the system does not install the app at all.")
+  -Basically, if your testing devices are using 5.1 like you say you are we will be good, if you are using 6.0.0 use the workaround
+ 
+-What our GPS does for the purpose of this milestone
 
+    
+Local data storage must be implemented
+-yes, settings stores a username
 
-At least one screen loads
-	-the main screen and a settings screen both load
-
-Local data storage should be obviously in progress
-	-store username in sharedPreferences
+Web service must be implemented
+-We are pulling images from the webservice using JSON, parsing them and displaying them 
 
 Obvious progress towards your user requirements
-	-yes
+
+A TXT document with a description of what you have done since the last milestone
