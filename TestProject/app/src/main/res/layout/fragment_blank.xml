@@ -14,7 +14,6 @@
 
     <ImageView
         android:id="@+id/fragment_image"
-        android:src="@drawable/defaultimage"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="5"
@@ -29,4 +28,4 @@
         />
 
 </LinearLayout>
-    <!--No source (android:src="@drawable/pizza") because we get images from cloudinary-->
+    <!--No source (android:src="@drawable/defaultimage) because we get images from cloudinary-->
