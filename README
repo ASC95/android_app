@@ -5,33 +5,38 @@ Previous requirements still work
 -you know it
 
 GPS must be implemented
--Ok so here is the deal with that:
-  -For some odd reason our device is updated to API level 23 (6.0.0 Marhsmallow) and NOT the API 22 5.1.1 as specified on the 
-    Android project page of the course site. 
-  -This issue is causing all sorts of problems which require granting of permissions at runtime. Though in our code we check for
-    Our location permission BEFORE connecting to the GoogleApiClient, it seems to to do the two at the same time, causing the first 
-    Instance of the App to have issues functioning because the required location permission can physically not be granted before
-    It tries to connect to the API.
-  -The current workaround for us is as follows.
-    1)Download and install app. Accept permission for location
-    2)Close App
-    3)Re-open App. Now permissions will be granted and the app will function correctly
-  -Everyone I have talked to (including the TA's) say they have their device at 6.0.0 so I cannot test if 5.1.1 will ask at install
-    Rather than during runtime (according to https://developer.android.com/training/permissions/requesting.html, under the requesting
-    At runtime section, which says "If the device is running Android 5.1 or lower, or your app's target SDK is 22 or lower: If you 
-    list a dangerous permission in your manifest, the user has to grant the permission when they install the app; 
-    if they do not grant the permission, the system does not install the app at all.")
-  -Basically, if your testing devices are using 5.1 like you say you are we will be good, if you are using 6.0.0 use the workaround
- 
--What our GPS does for the purpose of this milestone
+-What our GPS does for the purpose of this milestone (and you're demo)
+ -Clicking the "Post" button will give you two toasts for each location. One toast will say how far you are from one of the 4 current 
+    locations we are supporting, and whether or not you are within the 20m radius required for posting. The second toast says whether or 
+    not you are able to post (remember, the post feature is coming soon(TM))
+    
+ -So, for the GPS demo
+  0)Allow location priveleges when the app starts up
+  1)Press the Post Picture button
+  2)If you are within a 20m radius of one of the 4 locations (being in rice works well for this since Einstein's is a location), you will get
+    1 toast saying how far and 1 toast saying if you can post
+  3)If you are not at any of the locations, you are going to get 1 toast with the distance you are away and 1 toast saying you are too far away
+    to post 
+ -For final demo, being within 20m will open a new activity for uploading an image to the cloud web service and then that will be able to be viewed
+    in the app main screen. You will NOT see a toast for every location, only the one(s) you are in range of and can viably take a pic of
+
+-What I did with the GPS
+ -Hardcoded in the locations for our set "Places" (The Pav, Dumpling Cart, Einstien's, and O'Chill)
+ -When you hit Post Picture the app grabs your last location (it updates every 30s) and compares your long/lat using something called the Haversine formula
+  to see if your current location is within a 20m radius of the actual coordinates of the "place"
+	-This compare is just an if current distance < radius ret true; else ret false
+ - Toast w/ distance in the haversine method, toast in the checking forloop saying if you are in range
 
     
 Local data storage must be implemented
--yes, settings stores a username
+-Yes, settings stores a username
+-Themes coming for final turn-in/demo
 
 Web service must be implemented
 -We are pulling images from the webservice using JSON, parsing them and displaying them 
 
 Obvious progress towards your user requirements
-
-A TXT document with a description of what you have done since the last milestone
+-Remaining requirements
+ -Posting activity (w/camera, we already have the ability to post images just no UI for it atm)
+ -Support for more locations (shooting for ~10, currently sitting at 4)
+ -Themes
