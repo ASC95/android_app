@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-
         SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String name = settings.getString("username", "DefaultName");
         TextView textView = (TextView) findViewById(R.id.usernameDisplay);

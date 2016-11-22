@@ -13,11 +13,6 @@
                 <category android:name="android.intent.category.LAUNCHER" /> <!-- defines main activity -->
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="CLOUDINARY_URL"
-            android:value="cloudinary://181639785459231:reNtqzWpDj-GQ06v6cvWvKDOH90@dlw60s6pl" />
-
         <activity android:name=".SettingsActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

@@ -12,36 +12,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.cloudinary.Cloudinary;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.InputStream;
+import java.util.*;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BlankFragment.OnFragmentInteractionListener} interface
+ * {link BlankFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link BlankFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankFragment extends Fragment implements View.OnClickListener{
-    /*
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private OnFragmentInteractionListener mListener;
-    private Integer images[] = {R.drawable.pizza, R.drawable.cows_350};
-    */
-    private int currImage = 0;
-    private String imageUrls[] = {"http://res.cloudinary.com/dlw60s6pl/image/upload/v1478488799/A10_wuvlc8.jpg",
-            "http://res.cloudinary.com/dlw60s6pl/image/upload/v1478488795/titan_tgjxtb.jpg",
-            "http://res.cloudinary.com/dlw60s6pl/image/upload/v1478413259/sample.jpg"
-    };
+public class BlankFragment extends Fragment implements View.OnClickListener {
 
+    Map config = new HashMap<>();
+
+    /**
+     * Connects the mobile device to our cloud account, given our cloud_name. This has nothing to do with security so storing this
+     * information is fine.
+     */
     public BlankFragment() {
-        // Required empty public constructor
+        config.put("cloud_name", "dlw60s6pl");
     }
 
     /**
@@ -52,33 +54,22 @@ public class BlankFragment extends Fragment implements View.OnClickListener{
      * @param param2 Parameter 2.
      * @return A new instance of fragment BlankFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
         Bundle args = new Bundle();
-        /*
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        */
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        */
     }
 
     /**
-     * Called each time the fragment is drawn. Inflates the fragment's view. Calls setCurrentImage()
-     * to retrieve the image from the Cloudinary hosting service. Attaches an onClickListener to
-     * the entire fragment.
+     * Called each time the fragment is drawn. Inflates the fragment's view. Gives the fragment an onClickListener which
+     * allows the image of the fragment to change when clicked on. Note that when the image is clicked, it only pulls the most recently
+     * uploaded picture from the cloud to the device. This means that if you click on it, the picture will only change one time
+     *
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -87,26 +78,73 @@ public class BlankFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
-        ImageView imageView = (ImageView) view.findViewById(R.id.fragment_image);
-        setCurrentImage(imageView);
         view.setOnClickListener(this);
         return view;
     }
 
     /**
-     * This is onClickListener for the entire fragment. Upon a click, it updates the index variable
-     * then calls setCurrentImage(). Since the index variable was changed, setCurrentImage() loads
-     * a new image from a new url stored in the array.
+     * This method uses the android Volley library to submit a GET request to the cloud server. The cloud server returns a json array
+     * that contains all of the images that have the given "imageTag". Upon "onResponse" completion, this method passes the json
+     * to the parseJSON array.
      * @param view
      */
     @Override
     public void onClick(View view) {
-        currImage++;//change the index of the array which stored the image urls
-        if (currImage == 3) {
-            currImage = 0;
+        final ImageView imageView = (ImageView) view.findViewById(R.id.fragment_image);
+        final Cloudinary cloud = new Cloudinary(config);
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        String url = cloud.url().type("list").imageTag("Amphitheater.json").replaceAll("<img src='", "");
+        String parsedURL = url.replaceAll("'/>", "");
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, parsedURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        parseJSON(response, cloud, imageView);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("It's broken");
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    /**
+     * Accepts a string that is actually a json array, a Cloudinary object, and an ImageView that corresponds
+     * to the ImageView of this fragment. The method parses the json to find the image with the most recent upload date.
+     * Once it finds the image with the latest date, it re-scans the json to find the "public_id" of the image which is then
+     * used to build a url to access the image. Once the url of the most recent image is obtained, it is passed to the "setCurrentImage"
+     * method.
+     * @param input
+     * @param cloud
+     * @param view
+     */
+    private void parseJSON(String input, Cloudinary cloud, ImageView view) {
+        try {
+            JSONObject str = new JSONObject(input);
+            JSONArray ary = str.getJSONArray("resources");
+            List<String> dates = new ArrayList<>();
+            String targetImage = "";
+            for (int i = 0; i < ary.length(); i++) {
+                JSONObject innerObj = ary.getJSONObject(i);
+                String date = innerObj.getString("created_at");
+                dates.add(date);
+            }
+            Collections.sort(dates);
+            String keyDate = dates.get(dates.size() - 1);
+            for (int i = 0; i < ary.length(); i++) {
+                JSONObject innerObj = ary.getJSONObject(i);
+                String date = innerObj.getString("created_at");
+                if (date.equals(keyDate)) {
+                    targetImage = innerObj.getString("public_id");
+                    break;
+                }
+            }
+            setCurrentImage(view, cloud.url().generate(targetImage));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        ImageView imageView = (ImageView) view.findViewById(R.id.fragment_image);
-        setCurrentImage(imageView);
     }
 
     /*
@@ -117,8 +155,6 @@ public class BlankFragment extends Fragment implements View.OnClickListener{
         }
     }
     */
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -135,9 +171,6 @@ public class BlankFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onDetach() {
         super.onDetach();
-        /*
-        mListener = null;
-        */
     }
 
     /**
@@ -187,11 +220,13 @@ public class BlankFragment extends Fragment implements View.OnClickListener{
     }
 
     /**
-     * Creates an ImageDownloader object to retrieve the image from the url.
+     * Accepts this fragment's imageView and a url to build the image. Creates an ImageDownloader object
+     * that acquires the image from the cloud server.
      * @param imageView
+     * @param url
      */
-    private void setCurrentImage(ImageView imageView) {
+    private void setCurrentImage(ImageView imageView, String url) {
         ImageDownloader imageDownLoader = new ImageDownloader(imageView);
-        imageDownLoader.execute(imageUrls[currImage]);
+        imageDownLoader.execute(url);
     }
 }
