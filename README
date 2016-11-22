@@ -33,10 +33,13 @@ Local data storage must be implemented
 -Themes coming for final turn-in/demo
 
 Web service must be implemented
--We are pulling images from the webservice using JSON, parsing them and displaying them 
+-We are pulling images from the webservice using JSON, parsing them and displaying them.
+-For proof of interaction with the Cloudinary Image Hosting service, checkout "Cloud Demo.txt" and follow the instructions.
+You can upload a custom image to cloudinary and have it displayed in the app.
 
 Obvious progress towards your user requirements
 -Remaining requirements
  -Posting activity (w/camera, we already have the ability to post images just no UI for it atm)
  -Support for more locations (shooting for ~10, currently sitting at 4)
  -Themes
+ -Photo moderation
