@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +82,11 @@ public class BlankFragment extends Fragment implements View.OnClickListener {
         view.setOnClickListener(this);
         onClick(view);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     /**

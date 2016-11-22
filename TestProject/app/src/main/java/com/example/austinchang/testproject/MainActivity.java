@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onConnected(Bundle connectionHint) {
         try {
-            fusedLocationProviderApi.requestLocationUpdates(mGoogleApiClient,  locationRequest, this);
+            fusedLocationProviderApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
 //                Toast.makeText(MainActivity.this, "mLast is NOT null",
@@ -121,14 +122,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
 //                mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
 
-            }
-            else{
+            } else {
                 Toast.makeText(MainActivity.this, "mLast is null",
                         Toast.LENGTH_LONG).show();
             }
 
-        }
-        catch(SecurityException e){
+        } catch (SecurityException e) {
             Toast.makeText(MainActivity.this, e.getMessage(),
                     Toast.LENGTH_LONG).show();
 
@@ -152,41 +151,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     // Set up our 4 locations (we are going to have more, but not for this milestone)
-    public void setUpLocations(){
-        mGeofenceList.add(new Place("Einstein Bagel's", -78.510684 ,38.031631));
-        mGeofenceList.add(new Place("O'Hill Dining Hall", -78.515074 ,38.034868));
-        mGeofenceList.add(new Place("The Pav", -78.506740 ,38.035955));
-        mGeofenceList.add(new Place("Dumpling Cart", -78.506118 ,38.034069));
+    public void setUpLocations() {
+        mGeofenceList.add(new Place("Einstein Bagel's", -78.510684, 38.031631));
+        mGeofenceList.add(new Place("O'Hill Dining Hall", -78.515074, 38.034868));
+        mGeofenceList.add(new Place("The Pav", -78.506740, 38.035955));
+        mGeofenceList.add(new Place("Dumpling Cart", -78.506118, 38.034069));
 
     }
+
     // Uses the haversine formula to calculate if you are within 20m of the GPS coords of that
     //  particular location
-    public boolean inGeofence(Double in_long1, Double in_lat1, Double in_long2,Double in_lat2){
+    public boolean inGeofence(Double in_long1, Double in_lat1, Double in_long2, Double in_lat2) {
         final int R = 6371; // earths rad in KM
-        Double radius = 20.0/1000; //radius we are using in m (/1000 for km) =
+        Double radius = 20.0 / 1000; //radius we are using in m (/1000 for km) =
 
-        Double latDistance = toRad(in_lat2-in_lat1);
-        Double lonDistance = toRad(in_long2-in_long1);
+        Double latDistance = toRad(in_lat2 - in_lat1);
+        Double lonDistance = toRad(in_long2 - in_long1);
 
         Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
-                    Math.cos(toRad(in_lat1)) * Math.cos(toRad(in_lat2)) *
-                    Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                Math.cos(toRad(in_lat1)) * Math.cos(toRad(in_lat2)) *
+                        Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         Double distance = R * c;
 
-        if(distance <= radius){
-            Toast.makeText(MainActivity.this, "You are: "+ Math.round((distance*1000) * 100d) / 100d+ "m away, Feel free to post (feature coming soon)",
+        if (distance <= radius) {
+            Toast.makeText(MainActivity.this, "You are: " + Math.round((distance * 1000) * 100d) / 100d + "m away, Feel free to post (feature coming soon)",
                     Toast.LENGTH_LONG).show();
             return true;
-        }
-
-        else{
-            Toast.makeText(MainActivity.this, "You are: "+ Math.round((distance*1000) * 100d) / 100d+ "m  away, (Too far away to post)",
+        } else {
+            Toast.makeText(MainActivity.this, "You are: " + Math.round((distance * 1000) * 100d) / 100d + "m  away, (Too far away to post)",
                     Toast.LENGTH_LONG).show();
             return false;
         }
     }
+
     // Helper method for inGeofence
     private static Double toRad(Double value) {
         return value * Math.PI / 180;
@@ -208,22 +207,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getLocation();
 
 
-                for(int i=0; i<mGeofenceList.size(); i++){
+                for (int i = 0; i < mGeofenceList.size(); i++) {
                     Double tempLat1 = mGeofenceList.get(i).getLatitude();
                     Double tempLon1 = mGeofenceList.get(i).getLongitude();
 
                     Double tempLat2 = latitudeDouble;
                     Double tempLon2 = longitudeDouble;
 
-                    boolean flag = inGeofence(tempLon1,tempLat1, tempLon2, tempLat2);
+                    boolean flag = inGeofence(tempLon1, tempLat1, tempLon2, tempLat2);
 
                     String name = mGeofenceList.get(i).getName();
-                    if(flag){
-                        Toast.makeText(MainActivity.this, "You are near: "+name+". Would you like to post? (Post feature coming soon)",
+                    if (flag) {
+                        Toast.makeText(MainActivity.this, "You are near: " + name + ". Would you like to post? (Post feature coming soon)",
                                 Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        Toast.makeText(MainActivity.this, "You are not in range to post at: "+name+" at this time.",
+                    } else {
+                        Toast.makeText(MainActivity.this, "You are not in range to post at: " + name + " at this time.",
                                 Toast.LENGTH_LONG).show();
                     }
 
@@ -236,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void getLocation(){
+    private void getLocation() {
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(30000);
@@ -247,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mGoogleApiClient.connect();
         }
     }
-    
+
     //For some reason this only runs when the app is first installed. This is what is allowing 
     // us to use location since we are past the target API
     private void checkFinePermission() {
@@ -255,10 +253,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
         }
     }
-
 
 
 }
