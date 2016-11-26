@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            startActivity(intent);
 //        }
 //        loadCount++;
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.scroll_activity_main);
 
 
 
