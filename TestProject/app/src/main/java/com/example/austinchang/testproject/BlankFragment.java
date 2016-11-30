@@ -28,6 +28,10 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
+ * DO NOT DELETE THIS CLASS. It isn't used anymore but I might need to come back to it.
+ */
+
+/**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {link BlankFragment.OnFragmentInteractionListener} interface
@@ -47,14 +51,6 @@ public class BlankFragment extends Fragment implements View.OnClickListener {
         config.put("cloud_name", "dlw60s6pl");
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
-     */
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
         Bundle args = new Bundle();
@@ -222,7 +218,7 @@ public class BlankFragment extends Fragment implements View.OnClickListener {
         }
 
         protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+            bmImage.setImageBitmap(result);//this is where the fragment image is actually set
         }
     }
 

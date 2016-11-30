@@ -3,12 +3,8 @@
     <string name="app_name">UVAnywhere</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
-    <string name="image_title">image title</string>
-    <string name="timestamp">timestamp</string>
+    <string name="location_title">resource default location title</string>
+    <string name="timestamp">resource default timestamp</string>
     <string name="postPicture">Post Picture</string>
     <string name="settings">settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>

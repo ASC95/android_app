@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
@@ -23,11 +24,17 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * I disabled all location service stuff because it made my computer crash when I was trying to test ListView stuff.
+ * It would be nice if the location services also worked on the emulator instead of making the app crash.
+ */
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener {
+public class MainActivity extends AppCompatActivity {/*implements View.OnClickListener, OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener {*/
 
     protected GoogleApiClient mGoogleApiClient;
     protected TextView mLatitudeText;
@@ -40,28 +47,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected List<Place> mGeofenceList = new ArrayList<Place>();
     static final float RADIUS = 20;
 
-//    static int loadCount = 0;
+    private ListView mListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_listview); //redundant?
+        mListView = (ListView) findViewById(R.id.locations_list_view);
+        final ArrayList<UVALocation> locationList = UVALocation.getLocationsFromFile("locations.json", this);
+
+        MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
+        mListView.setAdapter(adapter);
+
+        /*
+        String[] listItems = new String[recipeList.size()];
+        for(int i = 0; i < recipeList.size(); i++){
+            Recipe recipe = recipeList.get(i);
+            listItems[i] = recipe.title;
+        }
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems);
+        mListView.setAdapter(adapter);
+
 //
 //        if(loadCount==0){
 //            Intent intent = new Intent(this, permissionsActicity.class);
 //            startActivity(intent);
 //        }
 //        loadCount++;
-        setContentView(R.layout.scroll_activity_main);
+        //setContentView(R.layout.scroll_activity_main);
 
-
-
-        //Buttons
         findViewById(R.id.settingsButton).setOnClickListener(this);
         findViewById(R.id.postButton).setOnClickListener(this);
-
-        //Check permissions
         checkFinePermission();
-
-        // Set our initial location request
         getLocation();
 
         // Create an instance of GoogleAPIClient.
@@ -72,53 +89,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .addApi(LocationServices.API)
                     .build();
         }
-
-
         setUpLocations();
+        */
     }
 
+    @Override
+    public void onStop() {
+        //mGoogleApiClient.disconnect();
+        super.onStop();
+    }
 
+    /**
+     * Restore preferences from the shared preferences file.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /*SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        String name = settings.getString("username", "DefaultName");
+        TextView textView = (TextView) findViewById(R.id.usernameDisplay);
+        textView.setText("Welcome " + name + "!");
+        */
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        //mGoogleApiClient.connect();
+        super.onStart();
+//        Toast.makeText(MainActivity.this, "Connected from onStart()",
+//                Toast.LENGTH_LONG).show();
+    }
+
+/*
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         // Print some toast to show we couldn't connect
         Toast.makeText(MainActivity.this, "Problem connecting",
                 Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-//        Toast.makeText(MainActivity.this, "Connected from onStart()",
-//                Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    /**
-     * Restore preferences from the shared preferences file. It is getting called!
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
-        String name = settings.getString("username", "DefaultName");
-        TextView textView = (TextView) findViewById(R.id.usernameDisplay);
-        textView.setText("Welcome " + name + "!");
-    }
-
-    /**
-     * This changes the text, but the text goes back to the hint when I return. Why is that?
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
 
     @Override
     public void onConnected(Bundle connectionHint) {
@@ -148,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onLocationChanged(Location location) {
         longitudeDouble = location.getLongitude();
         latitudeDouble = location.getLatitude();
-        //This is what our location is in. Location
+        //This is what our location is in. UVALocation
 //        Toast.makeText(MainActivity.this, "location :"+location.getLatitude()+" , "+location.getLongitude(), Toast.LENGTH_SHORT).show();
     }
 
@@ -156,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onConnectionSuspended(int i) {
 
     }
-
 
     // Set up our 4 locations (we are going to have more, but not for this milestone)
     public void setUpLocations() {
@@ -292,6 +304,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // permissions this app might request
         }
     }
+*/
 
 }
 
