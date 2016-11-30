@@ -33,8 +33,8 @@ import java.util.Map;
  * It would be nice if the location services also worked on the emulator instead of making the app crash.
  */
 
-public class MainActivity extends AppCompatActivity {/*implements View.OnClickListener, OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener {*/
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener {
 
     protected GoogleApiClient mGoogleApiClient;
     protected TextView mLatitudeText;
@@ -58,16 +58,6 @@ public class MainActivity extends AppCompatActivity {/*implements View.OnClickLi
 
         MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
         mListView.setAdapter(adapter);
-
-        /*
-        String[] listItems = new String[recipeList.size()];
-        for(int i = 0; i < recipeList.size(); i++){
-            Recipe recipe = recipeList.get(i);
-            listItems[i] = recipe.title;
-        }
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems);
-        mListView.setAdapter(adapter);
-
 //
 //        if(loadCount==0){
 //            Intent intent = new Intent(this, permissionsActicity.class);
@@ -90,7 +80,6 @@ public class MainActivity extends AppCompatActivity {/*implements View.OnClickLi
                     .build();
         }
         setUpLocations();
-        */
     }
 
     @Override
@@ -105,11 +94,10 @@ public class MainActivity extends AppCompatActivity {/*implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        /*SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String name = settings.getString("username", "DefaultName");
         TextView textView = (TextView) findViewById(R.id.usernameDisplay);
         textView.setText("Welcome " + name + "!");
-        */
     }
 
     @Override
@@ -119,13 +107,13 @@ public class MainActivity extends AppCompatActivity {/*implements View.OnClickLi
 
     @Override
     public void onStart() {
-        //mGoogleApiClient.connect();
+        mGoogleApiClient.connect();
         super.onStart();
 //        Toast.makeText(MainActivity.this, "Connected from onStart()",
 //                Toast.LENGTH_LONG).show();
     }
 
-/*
+
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         // Print some toast to show we couldn't connect
@@ -304,7 +292,7 @@ public class MainActivity extends AppCompatActivity {/*implements View.OnClickLi
             // permissions this app might request
         }
     }
-*/
+
 
 }
 
