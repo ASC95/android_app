@@ -124,7 +124,6 @@ public class MainListViewAdapter extends BaseAdapter {
             location.parsedURL = queryCloud(location);
         }
         executeVolleyRequest(location.parsedURL, location, mViewHolder);
-        //}
 
         //Don't delete this because I know it works
         /*convertView = mInflater.inflate(R.layout.list_view_row, parent, false);
@@ -156,6 +155,13 @@ public class MainListViewAdapter extends BaseAdapter {
         return parsedURL;
     }
 
+    /**
+     * Execute a volley request to get the image from the cloud. Volley automatically caches images that were downloaded so network usage
+     * should be at a minimum.
+     * @param parsedURL
+     * @param location
+     * @param mViewHolder
+     */
     public void executeVolleyRequest(String parsedURL, final UVALocation location, final ViewHolder mViewHolder) {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, parsedURL, null, new Response.Listener<JSONObject>() {
             @Override
@@ -166,7 +172,7 @@ public class MainListViewAdapter extends BaseAdapter {
                     //set dummy timestamp
                     //set dummy title?
                 } else {
-                    mViewHolder.timeStamp.setText(imageValues.get("timeStamp"));
+                    mViewHolder.timeStamp.setText(parseUploadDate(imageValues.get("timeStamp")));
                     mViewHolder.locationTitle.setText(location.locationTitle);
                     mViewHolder.locationImage.setImageUrl(imageValues.get("imageURL"),
                             VolleySingleton.getInstance(mContext).getImageLoader());
@@ -181,6 +187,11 @@ public class MainListViewAdapter extends BaseAdapter {
             }
         });
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsObjRequest);
+    }
+
+    public String parseUploadDate(String raw) {
+        String[] parts = raw.split("T");
+        return "Posted on " + parts[0] + " at " + parts[1].replace("Z", "");
     }
 
     /**

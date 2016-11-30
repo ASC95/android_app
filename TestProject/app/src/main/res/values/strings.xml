@@ -7,4 +7,5 @@
     <string name="timestamp">resource default timestamp</string>
     <string name="postPicture">Post Picture</string>
     <string name="settings">settings</string>
+    <string name="userName">default username</string>
 </resources>
