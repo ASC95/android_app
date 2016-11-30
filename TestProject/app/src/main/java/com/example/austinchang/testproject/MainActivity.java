@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
@@ -41,8 +42,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * I disabled all location service stuff because it made my computer crash when I was trying to test ListView stuff.
+ * It would be nice if the location services also worked on the emulator instead of making the app crash.
+ */
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener, OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener{
@@ -60,23 +67,22 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private File uploadFile;
     private Uri mPhotoUri;
     static final float RADIUS = 20;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_listview); //redundant?
+        mListView = (ListView) findViewById(R.id.locations_list_view);
+        final ArrayList<UVALocation> locationList = UVALocation.getLocationsFromFile("locations.json", this);
 
-        setContentView(R.layout.activity_main);
+        MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
+        mListView.setAdapter(adapter);
 
 
-
-        //Buttons
         findViewById(R.id.settingsButton).setOnClickListener(this);
         findViewById(R.id.postButton).setOnClickListener(this);
-
-        //Check permissions
         checkFinePermission();
-
-        // Set our initial location request
         getLocation();
 
         // Create an instance of GoogleAPIClient.
@@ -196,14 +202,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onStart();
     }
 
+
     @Override
     public void onStop() {
-        mGoogleApiClient.disconnect();
+        //mGoogleApiClient.disconnect();
         super.onStop();
     }
 
     /**
-     * Restore preferences from the shared preferences file. It is getting called!
+     * Restore preferences from the shared preferences file.
      */
     @Override
     protected void onResume() {
@@ -238,6 +245,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 return;
             }
         }
+
     }
 
     @Override
@@ -273,9 +281,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onLocationChanged(Location location) {
         longitudeDouble = location.getLongitude();
         latitudeDouble = location.getLatitude();
-        //This is what our location is in. Location
-//        Toast.makeText(MainActivity.this, "location :"+location.getLatitude()+" , "+location.getLongitude(), Toast.LENGTH_SHORT).show();
+        //This is what our location is in. UVALocation
     }
+
+    // Set up our 4 locations (we are going to have more, but not for this milestone)
+
 
     // Uses the haversine formula to calculate if you are within 20m of the GPS coords of that
     //  particular location
@@ -387,7 +397,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             mGoogleApiClient.connect();
         }
     }
-
     //For some reason this only runs when the app is first installed. This is what is allowing 
     // us to use location since we are past the target API
     private void checkFinePermission() {
@@ -398,6 +407,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
         }
     }
+
 
 
 

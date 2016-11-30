@@ -1,0 +1,218 @@
+/**
+ * Created by austinchang on 11/30/16. Thanks to https://www.raywenderlich.com/124438/android-listview-tutorial for the basic adapter
+ * class. Thanks to http://stackoverflow.com/questions/25381435/unconditional-layout-inflation-from-view-adapter-should-use-view-holder-patter
+ * for optimizing the getView() method.
+ */
+
+package com.example.austinchang.testproject;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.cloudinary.Cloudinary;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class MainListViewAdapter extends BaseAdapter {
+
+    private final Context mContext;
+    private final LayoutInflater mInflater;
+    private final ArrayList<UVALocation> mDataSource;
+    private final Map config = new HashMap<>();
+
+
+    public MainListViewAdapter(Context context, ArrayList<UVALocation> items) {
+        mContext = context;
+        mDataSource = items;
+        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        config.put("cloud_name", "dlw60s6pl");
+    }
+
+    /**
+     * Tells ListView how many items to show.
+     *
+     * @return the number of items in the data source
+     */
+    @Override
+    public int getCount() {
+        return mDataSource.size();
+    }
+
+    /**
+     * Accepts a position to place an object in the ListView
+     *
+     * @param position
+     * @return an object to be placed in the given position
+     */
+    @Override
+    public Object getItem(int position) {
+        return mDataSource.get(position);
+    }
+
+    /**
+     * Defines a unique ID for each item in the list
+     *
+     * @param position the position of the item
+     * @return the itemID for the list item. For simplicity, itemID = position
+     */
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    /**
+     * Using the ViewHolder pattern makes ListView scrolling more efficient because views are recycled.
+     */
+    static class ViewHolder {
+        private TextView locationTitle;
+        private TextView timeStamp;
+        private NetworkImageView locationImage;
+        //private ImageView locationImage;
+    }
+
+    /**
+     * Creates the view to display within each list row.
+     *
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return the view to display in the ListView
+     */
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        //UVALocation location = null;
+        ViewHolder mViewHolder = null;
+        UVALocation location = (UVALocation) getItem(position);
+
+        //Set references if null
+        if (convertView == null) {
+            //location = (UVALocation) getItem(position);
+            mViewHolder = new ViewHolder();
+            convertView = mInflater.inflate(R.layout.list_view_row, parent, false);
+            mViewHolder.timeStamp = (TextView) convertView.findViewById(R.id.timeStamp);
+            mViewHolder.locationTitle = (TextView) convertView.findViewById(R.id.locationTitle);
+            mViewHolder.locationImage = (NetworkImageView) convertView.findViewById(R.id.locationImage);
+            convertView.setTag(mViewHolder);
+            //References exist, so get tag.
+        } else {
+            mViewHolder = (ViewHolder) convertView.getTag();
+        }
+        /*Update location object if it wasn't set*/
+        if (location.parsedURL == null) {
+            location.parsedURL = queryCloud(location);
+        }
+        executeVolleyRequest(location.parsedURL, location, mViewHolder);
+
+        //Don't delete this because I know it works
+        /*convertView = mInflater.inflate(R.layout.list_view_row, parent, false);
+        TextView title = (TextView) convertView.findViewById(R.id.locationTitle);
+        TextView timeStamp = (TextView) convertView.findViewById(R.id.timeStamp);
+        ImageView image = (ImageView) convertView.findViewById(R.id.locationImage);
+        UVALocation location = (UVALocation) getItem(position);
+        title.setText(location.locationTitle);
+        timeStamp.setText(location.timeStamp);
+        NetworkImageView testNetwork = (NetworkImageView) convertView.findViewById(R.id.locationImage);
+        testNetwork.setImageUrl(url, VolleySingleton.getInstance(mContext).getImageLoader());*/
+        return convertView;
+    }
+
+    /**
+     * Contacts cloudinary to get most up to date image.
+     *
+     * @param location
+     * @return a clean url which contains json
+     */
+    public String queryCloud(final UVALocation location) {
+        final Cloudinary cloud = new Cloudinary(config);
+        String cloudTag = location.cloudTag + ".json";
+        String url = cloud.url().type("list").imageTag(cloudTag).replaceAll("<img src='", "");
+
+        Toast.makeText(mContext, "Queried the cloud", Toast.LENGTH_SHORT).show();
+
+        String parsedURL = url.replaceAll("'/>", "");
+        return parsedURL;
+    }
+
+    /**
+     * Execute a volley request to get the image from the cloud. Volley automatically caches images that were downloaded so network usage
+     * should be at a minimum.
+     * @param parsedURL
+     * @param location
+     * @param mViewHolder
+     */
+    public void executeVolleyRequest(String parsedURL, final UVALocation location, final ViewHolder mViewHolder) {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, parsedURL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Map<String, String> imageValues = getImageValues(response);
+                if (imageValues.isEmpty()) {
+                    //set dummy image
+                    //set dummy timestamp
+                    //set dummy title?
+                } else {
+                    mViewHolder.timeStamp.setText(parseUploadDate(imageValues.get("timeStamp")));
+                    mViewHolder.locationTitle.setText(location.locationTitle);
+                    mViewHolder.locationImage.setImageUrl(imageValues.get("imageURL"),
+                            VolleySingleton.getInstance(mContext).getImageLoader());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Make this load a dummy image or something...
+                error.printStackTrace();
+                System.out.println("error from queryCloud");
+            }
+        });
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsObjRequest);
+    }
+
+    public String parseUploadDate(String raw) {
+        String[] parts = raw.split("T");
+        return "Posted on " + parts[0] + " at " + parts[1].replace("Z", "");
+    }
+
+    /**
+     * If we implement the upvote feature, I might need to change this to return two urls: a "newest"
+     * and a "second newest". For now it just returns a map of one image's values
+     *
+     * @param input
+     * @return the most recent image from a given location
+     */
+    public Map<String, String> getImageValues(JSONObject input) {
+        final Cloudinary cloud = new Cloudinary(config);
+        Map<String, String> imageValues = new HashMap<>();
+        try {
+            JSONArray ary = input.getJSONArray("resources");
+            JSONObject targetImage = ary.getJSONObject(ary.length() - 1);
+            imageValues.put("imageURL", cloud.url().generate(targetImage.getString("public_id")));
+            imageValues.put("timeStamp", targetImage.getString("created_at"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error from getURL");
+        }
+        return imageValues;
+    }
+}

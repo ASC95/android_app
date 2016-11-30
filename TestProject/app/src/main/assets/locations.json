@@ -1,0 +1,51 @@
+{
+  "locations": [
+    {
+      "locationTitle": "Observatory Hill Dining Hall",
+      "timeStamp": "default json time stamp",
+      "cloudTag": "Observatory_Hill"
+    },
+
+    {
+      "locationTitle": "Einstein Bros. Bagels",
+      "timeStamp": "default json time stamp",
+      "cloudTag": "Einstein_Bros"
+    },
+
+    {
+      "locationTitle": "Newcomb Dining Hall",
+      "timeStamp": "default json time stamp",
+      "cloudTag": "Newcomb"
+    },
+
+    {
+      "locationTitle": "North Grounds Gym",
+      "timeStamp": "default json time stamp",
+      "cloudTag": "North_Grounds"
+    },
+
+    {
+      "locationTitle": "Memorial Gym",
+      "timeStamp": "default json time stamp",
+      "cloudTag": "Memorial_Gym"
+    },
+
+    {
+      "locationTitle": "Aquatic Fitness Center",
+      "timeStamp": "default json time stamp",
+      "cloudTag": "AFC"
+    },
+
+    {
+      "locationTitle": "Pavilion XI",
+      "timeStamp": "default json time stamp",
+      "cloudTag": "Pavilion_XI"
+    },
+
+    {
+      "locationTitle": "Dumpling Cart",
+      "timeStamp": "default json time stamp",
+      "cloudTag": "Dumpling_Cart"
+    }
+  ]
+}
