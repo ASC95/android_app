@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainListViewAdapter extends BaseAdapter implements View.OnClickListener {
+public class MainListViewAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final LayoutInflater mInflater;
@@ -111,7 +111,6 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
             mViewHolder.locationImage = (NetworkImageView) convertView.findViewById(R.id.locationImage);
 
             //convertView.setClickable(true);
-            convertView.setOnClickListener(this);
 
             convertView.setTag(mViewHolder);
         } else { //References exist, so get tag.
@@ -136,11 +135,6 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
         return convertView;
     }
 
-    @Override
-    public void onClick(View view) {
-        //call up the detail page
-    }
-
     /**
      * Contacts cloudinary to get most up to date image.
      *
@@ -151,7 +145,6 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
         final Cloudinary cloud = new Cloudinary(config);
         String cloudTag = location.cloudTag + ".json";
         String url = cloud.url().type("list").imageTag(cloudTag).replaceAll("<img src='", "");
-        //String url = cloud.url().transformation(new Transformation().width(imageSize).height(imageSize).crop("fit")).imageTag(cloudTag).replaceAll("<img src='", "");
 
         Toast.makeText(mContext, "Queried the cloud", Toast.LENGTH_SHORT).show();
 
@@ -176,10 +169,13 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
                     //set dummy timestamp
                     //set dummy title?
                 } else {
-                    mViewHolder.timeStamp.setText(parseUploadDate(imageValues.get("timeStamp")));
+                    String date = parseUploadDate(imageValues.get("timeStamp"));
+                    mViewHolder.timeStamp.setText(date);
+                    location.timeStamp = date;
                     mViewHolder.locationTitle.setText(location.locationTitle);
                     mViewHolder.locationImage.setImageUrl(imageValues.get("imageURL"),
                             VolleySingleton.getInstance(mContext).getImageLoader());
+
                 }
             }
         }, new Response.ErrorListener() {

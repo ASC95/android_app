@@ -22,6 +22,8 @@ public class UVALocation {
     public String timeStamp;
     public String cloudTag;
     public String parsedURL;
+
+    public String description;
     //public Map<String,String> imageValues;
     //public NetworkImageView locationImage;
 
@@ -41,6 +43,8 @@ public class UVALocation {
                 location.timeStamp = locations.getJSONObject(i).getString("timeStamp");
                 location.cloudTag = locations.getJSONObject(i).getString("cloudTag");
                 location.parsedURL = null;
+
+                location.description = locations.getJSONObject(i).getString("description");
                 //location.locationImage = null;
                 //location.imageValues = new HashMap<>();
                 locationList.add(location);
