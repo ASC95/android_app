@@ -11,37 +11,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class MainListViewAdapter extends BaseAdapter {
+public class MainListViewAdapter extends BaseAdapter implements View.OnClickListener {
 
     private final Context mContext;
     private final LayoutInflater mInflater;
     private final ArrayList<UVALocation> mDataSource;
     private final Map config = new HashMap<>();
-
+    public boolean shouldUpdate = false;
 
     public MainListViewAdapter(Context context, ArrayList<UVALocation> items) {
         mContext = context;
@@ -106,21 +100,25 @@ public class MainListViewAdapter extends BaseAdapter {
         ViewHolder mViewHolder = null;
         UVALocation location = (UVALocation) getItem(position);
 
-        //Set references if null
-        if (convertView == null) {
+        Toast.makeText(mContext, "Hello from getView", Toast.LENGTH_SHORT).show();
+
+        if (convertView == null) { //Set references if null
             //location = (UVALocation) getItem(position);
             mViewHolder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.list_view_row, parent, false);
             mViewHolder.timeStamp = (TextView) convertView.findViewById(R.id.timeStamp);
             mViewHolder.locationTitle = (TextView) convertView.findViewById(R.id.locationTitle);
             mViewHolder.locationImage = (NetworkImageView) convertView.findViewById(R.id.locationImage);
+
+            //convertView.setClickable(true);
+            convertView.setOnClickListener(this);
+
             convertView.setTag(mViewHolder);
-            //References exist, so get tag.
-        } else {
+        } else { //References exist, so get tag.
             mViewHolder = (ViewHolder) convertView.getTag();
         }
-        /*Update location object if it wasn't set*/
-        if (location.parsedURL == null) {
+        /*Update location object if it wasn't set || update if it was called from the handler*/
+        if (location.parsedURL == null || shouldUpdate) {
             location.parsedURL = queryCloud(location);
         }
         executeVolleyRequest(location.parsedURL, location, mViewHolder);
@@ -138,6 +136,11 @@ public class MainListViewAdapter extends BaseAdapter {
         return convertView;
     }
 
+    @Override
+    public void onClick(View view) {
+        //call up the detail page
+    }
+
     /**
      * Contacts cloudinary to get most up to date image.
      *
@@ -148,6 +151,7 @@ public class MainListViewAdapter extends BaseAdapter {
         final Cloudinary cloud = new Cloudinary(config);
         String cloudTag = location.cloudTag + ".json";
         String url = cloud.url().type("list").imageTag(cloudTag).replaceAll("<img src='", "");
+        //String url = cloud.url().transformation(new Transformation().width(imageSize).height(imageSize).crop("fit")).imageTag(cloudTag).replaceAll("<img src='", "");
 
         Toast.makeText(mContext, "Queried the cloud", Toast.LENGTH_SHORT).show();
 
@@ -206,7 +210,10 @@ public class MainListViewAdapter extends BaseAdapter {
         Map<String, String> imageValues = new HashMap<>();
         try {
             JSONArray ary = input.getJSONArray("resources");
-            JSONObject targetImage = ary.getJSONObject(ary.length() - 1);
+
+            //JSONObject targetImage = ary.getJSONObject(ary.length() - 1);
+            JSONObject targetImage = ary.getJSONObject(0);
+
             imageValues.put("imageURL", cloud.url().generate(targetImage.getString("public_id")));
             imageValues.put("timeStamp", targetImage.getString("created_at"));
         } catch (Exception e) {

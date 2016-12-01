@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
@@ -46,11 +47,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * I disabled all location service stuff because it made my computer crash when I was trying to test ListView stuff.
- * It would be nice if the location services also worked on the emulator instead of making the app crash.
- */
-
 public class MainActivity extends FragmentActivity implements View.OnClickListener, OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener{
 
@@ -75,16 +71,27 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         setContentView(R.layout.activity_main_listview); //redundant?
         mListView = (ListView) findViewById(R.id.locations_list_view);
         final ArrayList<UVALocation> locationList = UVALocation.getLocationsFromFile("locations.json", this);
-
-        MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
+        final MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
         mListView.setAdapter(adapter);
 
+        final Handler handler = new Handler();
+        handler.postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                adapter.shouldUpdate = true;
+                adapter.notifyDataSetChanged();
+                adapter.shouldUpdate = false;
+
+                Toast.makeText(MainActivity.this, "Handler called", Toast.LENGTH_SHORT).show();
+
+                handler.postDelayed( this, 60 * 1000 );
+            }
+        }, 60 * 1000 );
 
         findViewById(R.id.settingsButton).setOnClickListener(this);
         findViewById(R.id.postButton).setOnClickListener(this);
         checkFinePermission();
         getLocation();
-
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -93,7 +100,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     .addApi(LocationServices.API)
                     .build();
         }
-
         mImageView = (ImageView)findViewById(R.id.mImageView);
 
         // Helper method to set up places
@@ -157,7 +163,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 //            catch (Exception e){
 //
 //            }
-
         }
     }
 
@@ -215,6 +220,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+
         SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String name = settings.getString("username", "DefaultName");
         TextView textView = (TextView) findViewById(R.id.usernameDisplay);
@@ -385,8 +391,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
-
-
     private void getLocation() {
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -407,9 +411,5 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
         }
     }
-
-
-
-
 }
 
