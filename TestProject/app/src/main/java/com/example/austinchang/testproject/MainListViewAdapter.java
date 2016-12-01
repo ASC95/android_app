@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -20,7 +19,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.cloudinary.Cloudinary;
-import com.cloudinary.Transformation;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,12 +27,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainListViewAdapter extends BaseAdapter implements View.OnClickListener {
+public class MainListViewAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final LayoutInflater mInflater;
     private final ArrayList<UVALocation> mDataSource;
     private final Map config = new HashMap<>();
+
     public boolean shouldUpdate = false;
 
     public MainListViewAdapter(Context context, ArrayList<UVALocation> items) {
@@ -46,7 +45,6 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
 
     /**
      * Tells ListView how many items to show.
-     *
      * @return the number of items in the data source
      */
     @Override
@@ -56,7 +54,6 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
 
     /**
      * Accepts a position to place an object in the ListView
-     *
      * @param position
      * @return an object to be placed in the given position
      */
@@ -67,7 +64,6 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
 
     /**
      * Defines a unique ID for each item in the list
-     *
      * @param position the position of the item
      * @return the itemID for the list item. For simplicity, itemID = position
      */
@@ -96,54 +92,32 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //UVALocation location = null;
         ViewHolder mViewHolder = null;
         UVALocation location = (UVALocation) getItem(position);
+        //Toast.makeText(mContext, "Hello from getView", Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(mContext, "Hello from getView", Toast.LENGTH_SHORT).show();
-
-        if (convertView == null) { //Set references if null
+        if (convertView == null) {
             //location = (UVALocation) getItem(position);
             mViewHolder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.list_view_row, parent, false);
             mViewHolder.timeStamp = (TextView) convertView.findViewById(R.id.timeStamp);
             mViewHolder.locationTitle = (TextView) convertView.findViewById(R.id.locationTitle);
             mViewHolder.locationImage = (NetworkImageView) convertView.findViewById(R.id.locationImage);
-
             //convertView.setClickable(true);
-            convertView.setOnClickListener(this);
-
             convertView.setTag(mViewHolder);
-        } else { //References exist, so get tag.
+        } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
         /*Update location object if it wasn't set || update if it was called from the handler*/
-        if (location.parsedURL == null || shouldUpdate) {
-            location.parsedURL = queryCloud(location);
+        if (location.imageURL == null || shouldUpdate) {
+            location.imageURL = queryCloud(location);
         }
-        executeVolleyRequest(location.parsedURL, location, mViewHolder);
-
-        //Don't delete this because I know it works
-        /*convertView = mInflater.inflate(R.layout.list_view_row, parent, false);
-        TextView title = (TextView) convertView.findViewById(R.id.locationTitle);
-        TextView timeStamp = (TextView) convertView.findViewById(R.id.timeStamp);
-        ImageView image = (ImageView) convertView.findViewById(R.id.locationImage);
-        UVALocation location = (UVALocation) getItem(position);
-        title.setText(location.locationTitle);
-        timeStamp.setText(location.timeStamp);
-        NetworkImageView testNetwork = (NetworkImageView) convertView.findViewById(R.id.locationImage);
-        testNetwork.setImageUrl(url, VolleySingleton.getInstance(mContext).getImageLoader());*/
+        executeVolleyRequest(location.imageURL, location, mViewHolder);
         return convertView;
-    }
-
-    @Override
-    public void onClick(View view) {
-        //call up the detail page
     }
 
     /**
      * Contacts cloudinary to get most up to date image.
-     *
      * @param location
      * @return a clean url which contains json
      */
@@ -151,9 +125,8 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
         final Cloudinary cloud = new Cloudinary(config);
         String cloudTag = location.cloudTag + ".json";
         String url = cloud.url().type("list").imageTag(cloudTag).replaceAll("<img src='", "");
-        //String url = cloud.url().transformation(new Transformation().width(imageSize).height(imageSize).crop("fit")).imageTag(cloudTag).replaceAll("<img src='", "");
 
-        Toast.makeText(mContext, "Queried the cloud", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, "Queried the cloud", Toast.LENGTH_SHORT).show();
 
         String parsedURL = url.replaceAll("'/>", "");
         return parsedURL;
@@ -172,12 +145,13 @@ public class MainListViewAdapter extends BaseAdapter implements View.OnClickList
             public void onResponse(JSONObject response) {
                 Map<String, String> imageValues = getImageValues(response);
                 if (imageValues.isEmpty()) {
-                    //set dummy image
-                    //set dummy timestamp
-                    //set dummy title?
+                    /*Set dummy values*/
                 } else {
+                    location.timeStamp = parseUploadDate(imageValues.get("timeStamp"));
                     mViewHolder.timeStamp.setText(parseUploadDate(imageValues.get("timeStamp")));
                     mViewHolder.locationTitle.setText(location.locationTitle);
+
+                    location.imageURL = imageValues.get("imageURL");
                     mViewHolder.locationImage.setImageUrl(imageValues.get("imageURL"),
                             VolleySingleton.getInstance(mContext).getImageLoader());
                 }

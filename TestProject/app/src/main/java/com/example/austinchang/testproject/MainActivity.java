@@ -1,5 +1,6 @@
 package com.example.austinchang.testproject;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -52,7 +55,7 @@ import java.util.Map;
 
 import com.cloudinary.*;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener, OnConnectionFailedListener,
+public class MainActivity extends Activity implements View.OnClickListener, OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener{
 
     //Globals for locations
@@ -86,13 +89,24 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_listview); //redundant?
+        setContentView(R.layout.activity_main_listview);
         mListView = (ListView) findViewById(R.id.locations_list_view);
-
         final ArrayList<UVALocation> locationList = UVALocation.getLocationsFromFile("locations.json", this);
-
         final MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
         mListView.setAdapter(adapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
+                Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
+                UVALocation location = (UVALocation) parent.getItemAtPosition(position);
+                myIntent.putExtra("locationTitle", location.locationTitle);
+                myIntent.putExtra("imageURL", location.imageURL);
+                myIntent.putExtra("timeStamp", location.timeStamp);
+                myIntent.putExtra("description", location.description);
+                startActivity(myIntent);
+            }
+        });
 
         final Handler handler = new Handler();
         handler.postDelayed( new Runnable() {
@@ -102,7 +116,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 adapter.notifyDataSetChanged();
                 adapter.shouldUpdate = false;
 
-                Toast.makeText(MainActivity.this, "Handler called", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Handler called", Toast.LENGTH_SHORT).show();
 
                 handler.postDelayed( this, 60 * 1000 );
             }
