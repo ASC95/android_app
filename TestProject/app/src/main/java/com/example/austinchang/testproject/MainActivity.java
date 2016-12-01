@@ -92,28 +92,24 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         final ArrayList<UVALocation> locationList = UVALocation.getLocationsFromFile("locations.json", this);
         mListView = (ListView) findViewById(R.id.locations_list_view);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
-                String locationKey = "UVALocationObject";
-                String viewKey = "view";
-
-                myIntent.putExtra(locationKey, parent.getItemAtPosition(position));
-                myIntent.putExtra(viewKey, view);
-
-                /*
-                this is the UVALocation that was clicked. I need description, title, timestamp, image
-                UVALocation has title, timeStamp, I'll add description.
-                I just need to pass the view, then call findViewbyID to get the same image
-                 */
-                parent.getItemAtPosition(position);
-
-                /*I made the detail page id the same as the listitem ID. Hopefully they are the same?*/
-                //(NetworkImageView) view.findViewById(R.id.locationImage);
-
-                startActivity(myIntent);
-            }
-        });
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
+//                String locationKey = "UVALocationObject";
+//                String viewKey = "view";
+//                /*
+//                this is the UVALocation that was clicked. I need description, title, timestamp, image
+//                UVALocation has title, timeStamp, I'll add description.
+//                I just need to pass the view, then call findViewbyID to get the same image
+//                 */
+//                parent.getItemAtPosition(position);
+//
+//                /*I made the detail page id the same as the listitem ID. Hopefully they are the same?*/
+//                //(NetworkImageView) view.findViewById(R.id.locationImage);
+//
+//                startActivity(myIntent);
+//            }
+//        });
 
         final MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
         mListView.setAdapter(adapter);

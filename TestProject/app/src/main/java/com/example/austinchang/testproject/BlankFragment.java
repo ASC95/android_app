@@ -73,7 +73,7 @@ public class BlankFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.Xfragment_blank, container, false);
+        View view = inflater.inflate(R.layout.xfragment_blank, container, false);
         view.setOnClickListener(this);
         onClick(view);
         return view;
