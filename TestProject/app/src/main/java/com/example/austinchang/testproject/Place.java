@@ -6,17 +6,18 @@ package com.example.austinchang.testproject;
 public class Place {
 
     private String name;
+    private String cloudTag;
     private Double longitude;
     private Double latitude;
     //In meters
     static final int radius = 15;
 
 
-    public Place(String in_name, Double in_longitude, Double in_latitude){
+    public Place(String in_name, Double in_longitude, Double in_latitude, String in_cloudTag){
         setName(in_name);
         setLongitude(in_longitude);
         setLatitude(in_latitude);
-
+        setCloudTag(in_cloudTag);
     }
 
     public Double getLongitude() {
@@ -41,5 +42,13 @@ public class Place {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    public String getCloudTag() {
+        return cloudTag;
+    }
+
+    public void setCloudTag(String cloudTag) {
+        this.cloudTag = cloudTag;
     }
 }

@@ -43,6 +43,12 @@
     },
 
     {
+      "locationTitle": "Clemons Library",
+      "timeStamp": "default json time stamp",
+      "cloudTag": "Clemons_Library"
+    },
+
+    {
       "locationTitle": "Dumpling Cart",
       "timeStamp": "default json time stamp",
       "cloudTag": "Dumpling_Cart"

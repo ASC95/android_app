@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 
+import com.cloudinary.utils.ObjectUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -39,12 +41,15 @@ import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.cloudinary.*;
 
 /**
  * I disabled all location service stuff because it made my computer crash when I was trying to test ListView stuff.
@@ -54,6 +59,7 @@ import java.util.Map;
 public class MainActivity extends FragmentActivity implements View.OnClickListener, OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener{
 
+    //Globals for locations
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
     protected LocationRequest locationRequest;
@@ -61,13 +67,25 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected Double longitudeDouble;
     protected Double latitudeDouble;
     protected List<Place> mGeofenceList = new ArrayList<Place>();
-    protected ImageView mImageView;
+
+    //Globals for uploading
     private String mCurrentPhotoPath;
-    private String pictureImagePath;
     private File uploadFile;
     private Uri mPhotoUri;
-    static final float RADIUS = 20;
+    private String uploadImagePath;
+    private String cloudTag;
+
+    //Global radius for posting
+    static final double RADIUS = 25.0;
+
+    //Global list view
     private ListView mListView;
+
+    //Global Cloudinary api
+    protected Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "dlw60s6pl",
+            "api_key", "181639785459231",
+            "api_secret", "reNtqzWpDj-GQ06v6cvWvKDOH90"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +111,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     .addApi(LocationServices.API)
                     .build();
         }
-
-        mImageView = (ImageView)findViewById(R.id.mImageView);
 
         // Helper method to set up places
         setUpLocations();
@@ -148,17 +164,37 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         {
             Uri imageUri = mPhotoUri;
             uploadFile = new File(mPhotoUri.getPath());
-//            Bitmap bitmap;
-//            try {
-//                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
-//                mImageView = (ImageView) findViewById (R.id.mImageView);
-//                mImageView.setImageBitmap(bitmap);
-//            }
-//            catch (Exception e){
-//
-//            }
+
+            uploadImagePath = imageUri.getPath();
+            Toast.makeText(MainActivity.this, "Photo successfully uploaded!",
+                    Toast.LENGTH_SHORT).show();
+
+            uploadToCloud();
+            AsyncTaskRunner runner = new AsyncTaskRunner();
+            runner.execute();
 
         }
+    }
+
+    private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+
+        private String resp;
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                //getAbsolutePath()
+                cloudinary.uploader().upload(mCurrentPhotoPath,ObjectUtils.asMap("tags",cloudTag,"folder",cloudTag));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return resp;
+        }
+    }
+
+    public void uploadToCloud(){
+
     }
 
     public void dialog(String placeName){
@@ -181,11 +217,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     // Set up our 4 locations (we are going to have more, but not for this milestone)
     public void setUpLocations() {
-        mGeofenceList.add(new Place("Clemons Library",  -78.506091, 38.036355));
-        mGeofenceList.add(new Place("Einstein Bagel's", -78.510684, 38.031631));
-        mGeofenceList.add(new Place("O'Hill Dining Hall", -78.515074, 38.034868));
-        mGeofenceList.add(new Place("The Pav", -78.506740, 38.035955));
-        mGeofenceList.add(new Place("Dumpling Cart", -78.506118, 38.034069));
+        mGeofenceList.add(new Place("Clemons Library",  -78.506091, 38.036355,"Clemons_Library"));
+        mGeofenceList.add(new Place("Einstein Bros. Bagels", -78.510684, 38.031631,"Einstein_Bros"));
+        mGeofenceList.add(new Place("Observatory Hill Dining Hall", -78.515074, 38.034868,"Observatory_Hill"));
+        mGeofenceList.add(new Place("Pavilion XI", -78.506740, 38.035955,"Pavilion_XI"));
+        mGeofenceList.add(new Place("Dumpling Cart", -78.506118, 38.034069,"Dumpling_Cart"));
 
     }
 
@@ -254,10 +290,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             fusedLocationProviderApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
-//                Toast.makeText(MainActivity.this, "mLast is NOT null",
-//                        Toast.LENGTH_LONG).show();
-//                mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-//                mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
 
             } else {
                 Toast.makeText(MainActivity.this, "mLast is null",
@@ -265,9 +297,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
         }
         catch(SecurityException e){
-//            Toast.makeText(MainActivity.this, e.getMessage(),
-//                    Toast.LENGTH_LONG).show();
-
         }
 
     }
@@ -284,14 +313,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         //This is what our location is in. UVALocation
     }
 
-    // Set up our 4 locations (we are going to have more, but not for this milestone)
-
-
     // Uses the haversine formula to calculate if you are within 20m of the GPS coords of that
     //  particular location
     public boolean inGeofence(Double in_long1, Double in_lat1, Double in_long2, Double in_lat2) {
         final int R = 6371; // earths rad in KM
-        Double radius = 20.0 / 1000; //radius we are using in m (/1000 for km) =
+        Double radius = RADIUS / 1000; //radius we are using in m (/1000 for km) =
 
         Double latDistance = toRad(in_lat2 - in_lat1);
         Double lonDistance = toRad(in_long2 - in_long1);
@@ -367,6 +393,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
                 if (in_a_loc_flag == true){
                     String nearby_Place_Name = nearby_Place.getName();
+                    cloudTag = nearby_Place.getCloudTag();
 
                     dialog(nearby_Place_Name);
                 }
