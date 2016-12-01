@@ -3,49 +3,57 @@
     {
       "locationTitle": "Observatory Hill Dining Hall",
       "timeStamp": "default json time stamp",
-      "cloudTag": "Observatory_Hill"
+      "cloudTag": "Observatory_Hill",
+      "description": "Observatory Hill is located on the southwestern corner of Alderman and McCormick Roads near the first-year residences. More commonly known as O'Hill, this dining room has a large seating area with two levels, and eight delicious stations from which to choose!"
     },
 
     {
       "locationTitle": "Einstein Bros. Bagels",
       "timeStamp": "default json time stamp",
-      "cloudTag": "Einstein_Bros"
+      "cloudTag": "Einstein_Bros",
+      "description": "Einstein Bros. Bagels offers a wide variety of freshly baked bagels and muffins, gourmet breakfast and lunch sandwiches, hearty soups, signature salads, indulgent desserts and freshly brewed coffee, espresso beverages and frozen blended beverages."
     },
 
     {
       "locationTitle": "North Grounds Gym",
       "timeStamp": "default json time stamp",
-      "cloudTag": "North_Grounds"
+      "cloudTag": "North_Grounds",
+      "description": "The North Grounds Recreation Center, located near the University Law and Business Schools, was originally built in 1986 and was renovated in 2006. In 2013-14 we completed the 33,000 square feet expansion/renovation to add the aquatic space, cycle room and additional multipurpose room and squash courts."
     },
 
     {
       "locationTitle": "Memorial Gym",
       "timeStamp": "default json time stamp",
-      "cloudTag": "Memorial_Gym"
+      "cloudTag": "Memorial_Gym",
+      "description": "Memorial Gymnasium was opened in 1924. 2009 marked Memorial Gymnasium's 85th anniversary at the University of Virginia. Established originally as a memorial to the University's World War I casualties, this elegant facility continues to play a vital role in the athletic, recreational, and physical education kinesiology department on Grounds."
     },
 
     {
       "locationTitle": "Aquatic Fitness Center",
       "timeStamp": "default json time stamp",
-      "cloudTag": "AFC"
+      "cloudTag": "AFC",
+      "description":"The Aquatic & Fitness Center was built in 1996 and expanded in 2004. The facility consists of the natatorium, main fitness gallery, one multipurpose room, three court gymnasium, a free weight room expansion, 2 multipurpose rooms, and a cycle studio. The Aquatic & Fitness Center is home to both the UVA Men's and Women's Swimming and Diving Teams."
     },
 
     {
       "locationTitle": "Pavilion XI",
       "timeStamp": "default json time stamp",
-      "cloudTag": "Pavilion_XI"
+      "cloudTag": "Pavilion_XI",
+      "description":"The Pavilion XI is located in the middle of Central Grounds, on the first floor of Newcomb Hall. After a renovation in Summer 2015, the Pav now includes Subway, Chick-fil-A and Five Guys Burgers and Fries!"
     },
 
     {
       "locationTitle": "Clemons Library",
       "timeStamp": "default json time stamp",
-      "cloudTag": "Clemons_Library"
+      "cloudTag": "Clemons_Library",
+      "description": "Clemons Library houses collections for undergraduate studies and the Commerce School as well as digital media centers. It is named in honor of Harry C. Clemons, the University librarian from 1927 to 1950, who supervised the library's 1938 move from the Rotunda to Alderman Library."
     },
 
     {
       "locationTitle": "Dumpling Cart",
       "timeStamp": "default json time stamp",
-      "cloudTag": "Dumpling_Cart"
+      "cloudTag": "Dumpling_Cart",
+      "description": "Got Dumplings serves authentic and traditional Chinese food in Charlottesville, Virginia. We have a dumpling food truck at UVA as well as a restaurant in Charlottesville's historic Corner district."
     }
   ]
 }

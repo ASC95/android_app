@@ -3,9 +3,10 @@
     <string name="app_name">UVAnywhere</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
-    <string name="location_title">resource default location title</string>
-    <string name="timestamp">resource default timestamp</string>
+    <string name="location_title">string default location title</string>
+    <string name="timestamp">string default timestamp</string>
     <string name="postPicture">Post Picture</string>
     <string name="settings">settings</string>
-    <string name="userName">default username</string>
+    <string name="userName">string default username</string>
+    <string name="description">string default description</string>
 </resources>
