@@ -39,7 +39,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    tools:layout="@layout/xfragment_blank" />
+                    tools:layout="@layout/fragment_blank" />
 
                 <fragment
                     android:id="@+id/DumplingCart"
@@ -47,7 +47,7 @@
                     android:layout_width="0dp"
                     android:layout_height="300dp"
                     android:layout_weight="1"
-                    tools:layout="@layout/xfragment_blank" />
+                    tools:layout="@layout/fragment_blank" />
             </LinearLayout>
             <!--row2-->
             <LinearLayout
@@ -61,7 +61,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    tools:layout="@layout/xfragment_blank" />
+                    tools:layout="@layout/fragment_blank" />
 
                 <fragment
                     android:id="@+id/Pavilion"
@@ -69,7 +69,7 @@
                     android:layout_width="0dp"
                     android:layout_height="300dp"
                     android:layout_weight="1"
-                    tools:layout="@layout/xfragment_blank" />
+                    tools:layout="@layout/fragment_blank" />
             </LinearLayout>
             <!--row3-->
             <LinearLayout
@@ -83,7 +83,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    tools:layout="@layout/xfragment_blank" />
+                    tools:layout="@layout/fragment_blank" />
 
                 <fragment
                     android:id="@+id/Alderman"
@@ -91,7 +91,7 @@
                     android:layout_width="0dp"
                     android:layout_height="300dp"
                     android:layout_weight="1"
-                    tools:layout="@layout/xfragment_blank" />
+                    tools:layout="@layout/fragment_blank" />
             </LinearLayout>
 
         </LinearLayout>

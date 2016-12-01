@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +74,9 @@ public class BlankFragment extends Fragment implements View.OnClickListener {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.xfragment_blank, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_blank, container, false);
+
         view.setOnClickListener(this);
         onClick(view);
         return view;

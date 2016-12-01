@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,7 +32,6 @@ import android.widget.Toast;
 import android.Manifest;
 
 import com.cloudinary.utils.ObjectUtils;
-import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -89,27 +87,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_listview); //redundant?
-        final ArrayList<UVALocation> locationList = UVALocation.getLocationsFromFile("locations.json", this);
         mListView = (ListView) findViewById(R.id.locations_list_view);
 
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
-//                String locationKey = "UVALocationObject";
-//                String viewKey = "view";
-//                /*
-//                this is the UVALocation that was clicked. I need description, title, timestamp, image
-//                UVALocation has title, timeStamp, I'll add description.
-//                I just need to pass the view, then call findViewbyID to get the same image
-//                 */
-//                parent.getItemAtPosition(position);
-//
-//                /*I made the detail page id the same as the listitem ID. Hopefully they are the same?*/
-//                //(NetworkImageView) view.findViewById(R.id.locationImage);
-//
-//                startActivity(myIntent);
-//            }
-//        });
+        final ArrayList<UVALocation> locationList = UVALocation.getLocationsFromFile("locations.json", this);
 
         final MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
         mListView.setAdapter(adapter);
