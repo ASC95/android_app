@@ -223,11 +223,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     // Set up our 4 locations (we are going to have more, but not for this milestone)
     public void setUpLocations() {
-        mGeofenceList.add(new Place("Clemons Library",  -78.506091, 38.036355,"Clemons_Library"));
-        mGeofenceList.add(new Place("Einstein Bros. Bagels", -78.510684, 38.031631,"Einstein_Bros"));
-        mGeofenceList.add(new Place("Observatory Hill Dining Hall", -78.515074, 38.034868,"Observatory_Hill"));
-        mGeofenceList.add(new Place("Pavilion XI", -78.506740, 38.035955,"Pavilion_XI"));
+        //Correct places                                                        38.0348081
+        mGeofenceList.add(new Place("Observatory Hill Dining Hall", -78.517303, 38.0348081,"Observatory_Hill"));
+        mGeofenceList.add(new Place("Einstein Bros. Bagels", -78.5111235, 38.0316711,"Einstein_Bros"));
+        mGeofenceList.add(new Place("North Grounds Gym", -78.5153235, 38.0509367,"North_Grounds"));
+        mGeofenceList.add(new Place("Memorial Gym", -78.5093382, 38.0374805,"Memorial_Gym"));
+        mGeofenceList.add(new Place("Aquatic Fitness Center", -78.5156043, 38.0328773,"AFC"));
+        mGeofenceList.add(new Place("Pavilion XI", -78.5070115, 38.0358745,"Pavilion_XI"));
+        mGeofenceList.add(new Place("Clemons Library",  -78.5066322, 38.0363471,"Clemons_Library"));
         mGeofenceList.add(new Place("Dumpling Cart", -78.506118, 38.034069,"Dumpling_Cart"));
+        //WIP places
+
 
     }
 
