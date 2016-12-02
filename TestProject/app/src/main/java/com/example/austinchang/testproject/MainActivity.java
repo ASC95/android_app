@@ -95,8 +95,6 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String theme = settings.getString("theme","BlueTheme");
 
-
-
         if(theme.equals("OrangeTheme")){
             setTheme(R.style.OrangeTheme);
 
@@ -106,10 +104,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         }
         else{
             setTheme(R.style.BlueTheme);
-
         }
-
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_listview);
@@ -118,20 +113,20 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         final MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
         mListView.setAdapter(adapter);
 
-        /*
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
                 Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
                 UVALocation location = (UVALocation) parent.getItemAtPosition(position);
                 myIntent.putExtra("locationTitle", location.locationTitle);
-                myIntent.putExtra("imageURL", location.imageURL);
+                myIntent.putExtra("singlePicURL", location.singlePicURL);
                 myIntent.putExtra("timeStamp", location.timeStamp);
                 myIntent.putExtra("description", location.description);
                 startActivity(myIntent);
             }
         });
-        */
+
 
         final Handler handler = new Handler();
         handler.postDelayed( new Runnable() {

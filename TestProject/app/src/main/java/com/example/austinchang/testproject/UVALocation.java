@@ -21,8 +21,12 @@ public class UVALocation {
     public String locationTitle;
     public String timeStamp;
     public String cloudTag;
-    public String imageURL;
     public String description;
+    public String singlePicURL;
+    public String jsonURL;
+
+    //public String jsonURL;
+
 
     public static ArrayList<UVALocation> getLocationsFromFile(String filename, Context context){
         final ArrayList<UVALocation> locationList = new ArrayList<>();
@@ -40,9 +44,9 @@ public class UVALocation {
                 location.timeStamp = locations.getJSONObject(i).getString("timeStamp");
                 location.cloudTag = locations.getJSONObject(i).getString("cloudTag");
                 location.description = locations.getJSONObject(i).getString("description");
-                location.imageURL = null;
-                //location.locationImage = null;
-                //location.imageValues = new HashMap<>();
+                location.singlePicURL = null;
+                location.jsonURL = null;
+
                 locationList.add(location);
             }
         } catch (JSONException e) {

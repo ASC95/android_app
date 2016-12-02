@@ -28,8 +28,6 @@ public class DetailActivity extends Activity {
         settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String theme = settings.getString("theme","BlueTheme");
 
-
-
         if(theme.equals("OrangeTheme")){
             setTheme(R.style.OrangeTheme);
         }
@@ -43,16 +41,20 @@ public class DetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Intent intent = getIntent();
+
         String locationTitle = intent.getStringExtra("locationTitle");
-        String imageURL = intent.getStringExtra("imageURL");
-        String timeStamp = intent.getStringExtra("timeStamp");
-        String description = intent.getStringExtra("description");
         TextView title = (TextView) findViewById(R.id.locationTitle);
         title.setText(locationTitle);
+
+        String singlePicURL = intent.getStringExtra("singlePicURL");
         NetworkImageView view = (NetworkImageView) findViewById(R.id.locationImage);
-        view.setImageUrl(imageURL, VolleySingleton.getInstance(this).getImageLoader());
+        view.setImageUrl(singlePicURL, VolleySingleton.getInstance(this).getImageLoader());
+
+        String timeStamp = intent.getStringExtra("timeStamp");
         TextView time = (TextView) findViewById(R.id.timeStamp);
         time.setText(timeStamp);
+
+        String description = intent.getStringExtra("description");
         TextView desc = (TextView) findViewById(R.id.description);
         desc.setText(description);
 
@@ -73,7 +75,6 @@ public class DetailActivity extends Activity {
         //Getting and setting theme
         settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String theme = settings.getString("theme", "BlueTheme");
-
 
         if (theme.equals("OrangeTheme")) {
             setTheme(R.style.OrangeTheme);
