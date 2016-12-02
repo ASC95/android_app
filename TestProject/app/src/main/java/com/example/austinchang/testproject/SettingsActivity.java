@@ -14,6 +14,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
     private int theme;
+    private String old_Name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.cancel_button:
+                settings = getSharedPreferences("myFile", MODE_PRIVATE);
+                editor = settings.edit();
+                editor.putString("username",old_Name);
+                editor.commit();
+
                 Intent intent2 = new Intent(this, MainActivity.class);
                 startActivity(intent2);
                 break;
@@ -128,7 +134,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         // All objects are from android.context.Context
         settings = getSharedPreferences("myFile", MODE_PRIVATE);
         editor = settings.edit();
-        String old_Name = settings.getString("username","DefaultUser");
+        old_Name = settings.getString("username","DefaultUser");
         EditText editText = (EditText) findViewById(R.id.editText);
 
         if(editText.getText().toString().equals("")) {
