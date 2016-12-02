@@ -3,5 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
     <color name="gold">#f5c730</color>
+    <color name="goldDark">#cca300</color>
+    <color name="goldAccent">#ffa31a</color>
+
+    <color name="orange">#f5c730</color>
+    <color name="orangeDark">#cca300</color>
+    <color name="orangeAccent">#ffa31a</color>
 </resources>
