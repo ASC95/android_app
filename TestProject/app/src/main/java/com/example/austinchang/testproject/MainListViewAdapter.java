@@ -7,6 +7,7 @@
 package com.example.austinchang.testproject;
 
 import android.content.Context;
+import android.support.v4.view.AsyncLayoutInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,11 @@ public class MainListViewAdapter extends BaseAdapter {
         mDataSource = items;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         config.put("cloud_name", "dlw60s6pl");
+        preLoadImages();
+    }
+
+    public void preLoadImages() {
+
     }
 
     /**
@@ -93,8 +99,9 @@ public class MainListViewAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder mViewHolder;// = null;
+        ViewHolder mViewHolder = null;
         UVALocation location = (UVALocation) getItem(position);
+
         //Toast.makeText(mContext, "Hello from getView", Toast.LENGTH_SHORT).show();
 
         if (convertView == null) {
@@ -108,10 +115,10 @@ public class MainListViewAdapter extends BaseAdapter {
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
-        if (location.imageURL == null || shouldUpdate) {
-            location.imageURL = queryCloud(location);
+        if (location.jsonURL == null || shouldUpdate) {
+            location.jsonURL = queryCloud(location);//this is a url to get JSON
         }
-        executeVolleyRequest(location.imageURL, location, mViewHolder);
+        executeVolleyRequest(location.jsonURL, location, mViewHolder);
 
         //mViewHolder.locationTitle.setText(location.locationTitle);
 
@@ -119,7 +126,7 @@ public class MainListViewAdapter extends BaseAdapter {
     }
 
     /**
-     * Contacts cloudinary to get most up to date image.
+     * Contacts cloudinary to get most up to date image. Returns a url that will eventually get JSON.
      * @param location
      * @return a clean url which contains json
      */
@@ -128,7 +135,7 @@ public class MainListViewAdapter extends BaseAdapter {
         String cloudTag = location.cloudTag + ".json";
         String url = cloud.url().type("list").imageTag(cloudTag).replaceAll("<img src='", "");
 
-        Toast.makeText(mContext, "Queried the cloud", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, "Queried the cloud", Toast.LENGTH_SHORT).show();
 
         String parsedURL = url.replaceAll("'/>", "");
         return parsedURL;
@@ -137,15 +144,16 @@ public class MainListViewAdapter extends BaseAdapter {
     /**
      * Execute a volley request to get the image from the cloud. Volley automatically caches images that were downloaded so network usage
      * should be at a minimum.
-     * @param parsedURL
+     * @param jsonURL
      * @param location
      * @param mViewHolder
      */
-    public void executeVolleyRequest(String parsedURL, final UVALocation location, final ViewHolder mViewHolder) {
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, parsedURL, null, new Response.Listener<JSONObject>() {
+    public void executeVolleyRequest(final String jsonURL, final UVALocation location, final ViewHolder mViewHolder) {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, jsonURL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Map<String, String> imageValues = getImageValues(response);
+
                 if (imageValues.isEmpty()) {
                     /*Set dummy values*/
                 } else {
@@ -154,9 +162,9 @@ public class MainListViewAdapter extends BaseAdapter {
 
                     mViewHolder.locationTitle.setText(location.locationTitle);
 
-                    //location.imageURL = imageValues.get("imageURL");
-                    //mViewHolder.locationImage.setImageUrl(imageValues.get("imageURL"),
-                            //VolleySingleton.getInstance(mContext).getImageLoader());
+                    location.singlePicURL = imageValues.get("imageURL");
+                    mViewHolder.locationImage.setImageUrl(location.singlePicURL,
+                            VolleySingleton.getInstance(mContext).getImageLoader());
                 }
             }
         }, new Response.ErrorListener() {
@@ -187,10 +195,8 @@ public class MainListViewAdapter extends BaseAdapter {
         Map<String, String> imageValues = new HashMap<>();
         try {
             JSONArray ary = input.getJSONArray("resources");
-
             //JSONObject targetImage = ary.getJSONObject(ary.length() - 1);
             JSONObject targetImage = ary.getJSONObject(0);
-
             imageValues.put("imageURL", cloud.url().generate(targetImage.getString("public_id")));
             imageValues.put("timeStamp", targetImage.getString("created_at"));
         } catch (Exception e) {

@@ -9,21 +9,19 @@
     <TextView
         android:id="@+id/locationTitle"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:text="@string/location_title"/>
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/locationImage"
+        android:scaleType="centerCrop"
         android:layout_width="match_parent"
-
-        android:layout_weight="10"
-        android:layout_height="0dp"/>
+        android:layout_gravity="center"
+        android:layout_height="200dp"/>
 
     <TextView
         android:id="@+id/timeStamp"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:text="@string/timestamp"/>
 </LinearLayout>
