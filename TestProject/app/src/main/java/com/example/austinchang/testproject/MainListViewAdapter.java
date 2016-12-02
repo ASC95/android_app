@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -92,7 +93,7 @@ public class MainListViewAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder mViewHolder = null;
+        ViewHolder mViewHolder;// = null;
         UVALocation location = (UVALocation) getItem(position);
         //Toast.makeText(mContext, "Hello from getView", Toast.LENGTH_SHORT).show();
 
@@ -103,16 +104,17 @@ public class MainListViewAdapter extends BaseAdapter {
             mViewHolder.timeStamp = (TextView) convertView.findViewById(R.id.timeStamp);
             mViewHolder.locationTitle = (TextView) convertView.findViewById(R.id.locationTitle);
             mViewHolder.locationImage = (NetworkImageView) convertView.findViewById(R.id.locationImage);
-            //convertView.setClickable(true);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
-        /*Update location object if it wasn't set || update if it was called from the handler*/
         if (location.imageURL == null || shouldUpdate) {
             location.imageURL = queryCloud(location);
         }
         executeVolleyRequest(location.imageURL, location, mViewHolder);
+
+        //mViewHolder.locationTitle.setText(location.locationTitle);
+
         return convertView;
     }
 
@@ -126,7 +128,7 @@ public class MainListViewAdapter extends BaseAdapter {
         String cloudTag = location.cloudTag + ".json";
         String url = cloud.url().type("list").imageTag(cloudTag).replaceAll("<img src='", "");
 
-        //Toast.makeText(mContext, "Queried the cloud", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Queried the cloud", Toast.LENGTH_SHORT).show();
 
         String parsedURL = url.replaceAll("'/>", "");
         return parsedURL;
@@ -149,11 +151,12 @@ public class MainListViewAdapter extends BaseAdapter {
                 } else {
                     location.timeStamp = parseUploadDate(imageValues.get("timeStamp"));
                     mViewHolder.timeStamp.setText(parseUploadDate(imageValues.get("timeStamp")));
+
                     mViewHolder.locationTitle.setText(location.locationTitle);
 
-                    location.imageURL = imageValues.get("imageURL");
-                    mViewHolder.locationImage.setImageUrl(imageValues.get("imageURL"),
-                            VolleySingleton.getInstance(mContext).getImageLoader());
+                    //location.imageURL = imageValues.get("imageURL");
+                    //mViewHolder.locationImage.setImageUrl(imageValues.get("imageURL"),
+                            //VolleySingleton.getInstance(mContext).getImageLoader());
                 }
             }
         }, new Response.ErrorListener() {
@@ -161,7 +164,7 @@ public class MainListViewAdapter extends BaseAdapter {
             public void onErrorResponse(VolleyError error) {
                 //Make this load a dummy image or something...
                 error.printStackTrace();
-                System.out.println("error from queryCloud");
+                System.out.println("error from Volley");
             }
         });
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsObjRequest);
@@ -192,7 +195,7 @@ public class MainListViewAdapter extends BaseAdapter {
             imageValues.put("timeStamp", targetImage.getString("created_at"));
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error from getURL");
+            System.out.println("Error from getImageValues");
         }
         return imageValues;
     }

@@ -23,8 +23,6 @@ public class UVALocation {
     public String cloudTag;
     public String imageURL;
     public String description;
-    //public Map<String,String> imageValues;
-    //public NetworkImageView locationImage;
 
     public static ArrayList<UVALocation> getLocationsFromFile(String filename, Context context){
         final ArrayList<UVALocation> locationList = new ArrayList<>();

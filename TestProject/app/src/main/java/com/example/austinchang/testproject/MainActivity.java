@@ -118,6 +118,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         final MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
         mListView.setAdapter(adapter);
 
+        /*
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
@@ -130,6 +131,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
                 startActivity(myIntent);
             }
         });
+        */
 
         final Handler handler = new Handler();
         handler.postDelayed( new Runnable() {
@@ -297,7 +299,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
 
     @Override
     public void onStop() {
-        //mGoogleApiClient.disconnect();
+        mGoogleApiClient.disconnect();
         super.onStop();
     }
 
