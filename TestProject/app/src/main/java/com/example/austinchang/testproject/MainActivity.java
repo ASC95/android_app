@@ -66,6 +66,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
     protected Double longitudeDouble;
     protected Double latitudeDouble;
     protected List<Place> mGeofenceList = new ArrayList<Place>();
+    private int refreshRate = 15 * 1000;
 
     //Globals for uploading
     private String mCurrentPhotoPath;
@@ -127,7 +128,6 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
             }
         });
 
-
         final Handler handler = new Handler();
         handler.postDelayed( new Runnable() {
             @Override
@@ -138,9 +138,9 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
 
                 //Toast.makeText(MainActivity.this, "Handler called", Toast.LENGTH_SHORT).show();
 
-                handler.postDelayed( this, 60 * 1000 );
+                handler.postDelayed( this, refreshRate);
             }
-        }, 60 * 1000 );
+        }, refreshRate );
 
         findViewById(R.id.settingsButton).setOnClickListener(this);
         findViewById(R.id.postButton).setOnClickListener(this);
