@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
     protected Double longitudeDouble;
     protected Double latitudeDouble;
     protected List<Place> mGeofenceList = new ArrayList<Place>();
-    private int refreshRate = 15 * 1000;
+    private int refreshRate = 20000;
 
     //Globals for uploading
     private String mCurrentPhotoPath;
