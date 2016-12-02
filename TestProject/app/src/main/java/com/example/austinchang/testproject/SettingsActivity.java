@@ -23,8 +23,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String theme = settings.getString("theme","BlueTheme");
 
-
-
         if(theme.equals("OrangeTheme")){
             setTheme(R.style.OrangeTheme);
         }

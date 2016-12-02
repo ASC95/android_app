@@ -118,6 +118,9 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
+
+                //view.animate().translationZ(10.0f);
+
                 Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
                 UVALocation location = (UVALocation) parent.getItemAtPosition(position);
                 myIntent.putExtra("locationTitle", location.locationTitle);

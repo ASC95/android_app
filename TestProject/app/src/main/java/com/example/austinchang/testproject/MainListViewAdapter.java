@@ -7,6 +7,8 @@
 package com.example.austinchang.testproject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.AsyncLayoutInflater;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,6 +113,9 @@ public class MainListViewAdapter extends BaseAdapter {
             mViewHolder.timeStamp = (TextView) convertView.findViewById(R.id.timeStamp);
             mViewHolder.locationTitle = (TextView) convertView.findViewById(R.id.locationTitle);
             mViewHolder.locationImage = (NetworkImageView) convertView.findViewById(R.id.locationImage);
+
+            //mViewHolder.locationImage.setDefaultImageResId(R.drawable.cloud);
+
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
