@@ -20,15 +20,17 @@
         android:layout_height="0dp">
     </ListView>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center">
+        android:background="@color/grey"
+        android:paddingRight="20dp">
 
         <Button
             android:id="@+id/postButton"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="true"
@@ -36,8 +38,10 @@
 
         <Button
             android:id="@+id/settingsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings" />
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_settings_black_18dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
+    </RelativeLayout>
 </LinearLayout>
