@@ -76,7 +76,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
     private String cloudTag;
 
     //Global radius for posting
-    static final double RADIUS = 25.0;
+    static final double RADIUS = 40.0;
 
     //Global list view
     private ListView mListView;
@@ -415,8 +415,8 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         }
         // Out of radius
         else {
-//            Toast.makeText(MainActivity.this, "You are: " + Math.round((distance * 1000) * 100d) / 100d + "m  away, (Too far away to post)",
-//                    Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "You are: " + Math.round((distance * 1000) * 100d) / 100d + "m  away, (Too far away to post)",
+                    Toast.LENGTH_SHORT).show();
             return false;
         }
     }
