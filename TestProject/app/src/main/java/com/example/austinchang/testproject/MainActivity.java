@@ -86,8 +86,31 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
             "api_key", "181639785459231",
             "api_secret", "reNtqzWpDj-GQ06v6cvWvKDOH90"));
 
+    private SharedPreferences settings;
+    private SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Getting and setting theme
+        settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        String theme = settings.getString("theme","BlueTheme");
+
+
+
+        if(theme.equals("OrangeTheme")){
+            setTheme(R.style.OrangeTheme);
+
+        }
+        else if (theme.equals("GoldTheme")){
+            setTheme(R.style.GoldTheme);
+        }
+        else{
+            setTheme(R.style.BlueTheme);
+
+        }
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_listview);
         mListView = (ListView) findViewById(R.id.locations_list_view);
@@ -138,6 +161,11 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         }
         // Helper method to set up places
         setUpLocations();
+    }
+
+    public void changeTheme(int newTheme) {
+        setTheme(newTheme);
+        //recreate();
     }
 
     private File createImageFile() throws IOException {
@@ -280,9 +308,33 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
      */
     @Override
     protected void onResume() {
+        //Getting and setting theme
+        settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        String theme = settings.getString("theme","BlueTheme");
+
+
+
+        if(theme.equals("OrangeTheme")){
+            setTheme(R.style.OrangeTheme);
+            changeTheme(R.style.OrangeTheme);
+        }
+        else if (theme.equals("GoldTheme")){
+            setTheme(R.style.GoldTheme);
+            changeTheme(R.style.GoldTheme);
+        }
+        else{
+            setTheme(R.style.BlueTheme);
+            changeTheme(R.style.BlueTheme);
+        }
         super.onResume();
 
+
+
+
+
         SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
+
+
         String name = settings.getString("username", "DefaultName");
         TextView textView = (TextView) findViewById(R.id.usernameDisplay);
         textView.setText("Welcome " + name + "!");

@@ -2,6 +2,7 @@ package com.example.austinchang.testproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,8 +17,29 @@ import org.w3c.dom.Text;
 
 public class DetailActivity extends Activity {
 
+    private SharedPreferences settings;
+    private SharedPreferences.Editor editor;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Getting and setting theme
+        settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        String theme = settings.getString("theme","BlueTheme");
+
+
+
+        if(theme.equals("OrangeTheme")){
+            setTheme(R.style.OrangeTheme);
+        }
+        else if (theme.equals("GoldTheme")){
+            setTheme(R.style.GoldTheme);
+        }
+        else{
+            setTheme(R.style.BlueTheme);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Intent intent = getIntent();
@@ -44,5 +66,32 @@ public class DetailActivity extends Activity {
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_display_message);
         layout.addView(textView);
         */
+    }
+
+    @Override
+    protected void onResume() {
+        //Getting and setting theme
+        settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        String theme = settings.getString("theme", "BlueTheme");
+
+
+        if (theme.equals("OrangeTheme")) {
+            setTheme(R.style.OrangeTheme);
+            changeTheme(R.style.OrangeTheme);
+        } else if (theme.equals("GoldTheme")) {
+            setTheme(R.style.GoldTheme);
+            changeTheme(R.style.GoldTheme);
+        } else {
+            setTheme(R.style.BlueTheme);
+            changeTheme(R.style.BlueTheme);
+        }
+        super.onResume();
+
+
+    }
+
+    public void changeTheme(int newTheme) {
+        setTheme(newTheme);
+        //recreate();
     }
 }

@@ -11,14 +11,38 @@ import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
     TextView welcomeUser;
+    private SharedPreferences settings;
+    private SharedPreferences.Editor editor;
+    private int theme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //Getting and setting theme
+        settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        String theme = settings.getString("theme","BlueTheme");
+
+
+
+        if(theme.equals("OrangeTheme")){
+            setTheme(R.style.OrangeTheme);
+        }
+        else if (theme.equals("GoldTheme")){
+            setTheme(R.style.GoldTheme);
+        }
+        else{
+            setTheme(R.style.BlueTheme);
+        }
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
         findViewById(R.id.save_button).setOnClickListener(this);
         findViewById(R.id.cancel_button).setOnClickListener(this);
+        findViewById(R.id.OrangeTheme).setOnClickListener(this);
+        findViewById(R.id.BlueTheme).setOnClickListener(this);
+        findViewById(R.id.GoldTheme).setOnClickListener(this);
 
         welcomeUser = (TextView)findViewById(R.id.textView);
         SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
@@ -28,7 +52,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
 
 
+
+
+
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -43,24 +72,57 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent2);
                 break;
 
+            case R.id.OrangeTheme:
+                settings = getSharedPreferences("myFile", MODE_PRIVATE);
+                editor = settings.edit();
+                editor.putString("theme","OrangeTheme");
+                editor.commit();
+
+
+                changeTheme(R.style.OrangeTheme);
+                break;
+
+            case R.id.BlueTheme:
+                settings = getSharedPreferences("myFile", MODE_PRIVATE);
+                editor = settings.edit();
+                editor.putString("theme","BlueTheme");
+                editor.commit();
+
+                changeTheme(R.style.BlueTheme);
+                break;
+
+            case R.id.GoldTheme:
+                settings = getSharedPreferences("myFile", MODE_PRIVATE);
+                editor = settings.edit();
+                editor.putString("theme","GoldTheme");
+                editor.commit();
+
+                changeTheme(R.style.GoldTheme);
+                break;
 
             default:
                 break;
         }
     }
 
+
+    public void changeTheme(int newTheme) {
+        setTheme(newTheme);
+        recreate();
+    }
+
+
+
     @Override
     protected void onPause() {
         super.onPause();
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
-        SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        editor = settings.edit();
         String old_Name = settings.getString("username","");
-
         EditText editText = (EditText) findViewById(R.id.editText);
-//        Toast.makeText(SettingsActivity.this, "["+editText.getText().toString()+"]",
-//                Toast.LENGTH_LONG).show();
+
         if(editText.getText().toString()== "") {
             editor.putString("username", old_Name.toString());
             // Commit the edits!

@@ -23,17 +23,17 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:hint="Edit/Enter your username"
-        android:layout_above="@+id/cancel_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp" />
+        android:layout_marginTop="90dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Username"
+        android:text="Save Changes"
         android:id="@+id/save_button"
-        android:layout_marginBottom="145dp"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="97dp"
+        android:layout_below="@+id/BlueTheme"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -41,9 +41,49 @@
         android:layout_height="wrap_content"
         android:text="Cancel"
         android:id="@+id/cancel_button"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="51dp"
+        android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="CHOOSE THEME"
+        android:id="@+id/textView2"
+        android:layout_marginTop="112dp"
+        android:layout_below="@+id/cancel_button"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Orange"
+        android:id="@+id/OrangeTheme"
+        android:layout_marginTop="86dp"
+        android:background="@android:color/holo_orange_dark"
+        android:layout_below="@+id/textView2"
+        android:layout_toLeftOf="@+id/editText"
+        android:layout_toStartOf="@+id/editText" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BLUE"
+        android:id="@+id/BlueTheme"
+        android:background="@android:color/holo_blue_dark"
+        android:layout_alignTop="@+id/OrangeTheme"
+        android:layout_alignStart="@+id/cancel_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GOLD"
+        android:id="@+id/GoldTheme"
+        android:background="@color/gold"
+        android:layout_alignTop="@+id/BlueTheme"
+        android:layout_toRightOf="@+id/editText"
+        android:layout_toEndOf="@+id/editText" />
 
 
 </RelativeLayout>
