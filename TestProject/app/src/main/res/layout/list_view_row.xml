@@ -4,10 +4,12 @@
     android:layout_height="300dp"
     android:orientation="vertical"
     android:paddingEnd="20dp"
-    android:paddingStart="20dp">
+    android:paddingStart="20dp"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/locationTitle"
+        android:background="@color/white"
         style="@style/CodeFormat"
         android:layout_height="50dp"
         android:text="@string/location_title"
@@ -24,6 +26,7 @@
 
     <TextView
         android:id="@+id/timeStamp"
+        android:background="@color/white"
         style="@style/CodeFormat"
         android:layout_height="50dp"
         android:text="@string/timestamp"

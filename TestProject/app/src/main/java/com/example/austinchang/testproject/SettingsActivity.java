@@ -47,13 +47,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String name = settings.getString("username", "DefaultName");
 
-
-
-
-
-
-
-
     }
 
 
