@@ -419,7 +419,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         // Out of radius
         else {
 //            Toast.makeText(MainActivity.this, "You are: " + Math.round((distance * 1000) * 100d) / 100d + "m  away, (Too far away to post)",
-//                    Toast.LENGTH_LONG).show();
+//                    Toast.LENGTH_SHORT).show();
             return false;
         }
     }

@@ -47,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         welcomeUser = (TextView)findViewById(R.id.textView);
         SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String name = settings.getString("username", "DefaultName");
-        welcomeUser.setText("Welcome back, "+name+"!");
+
 
 
 
@@ -63,6 +63,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.save_button:
+                //changed since last push
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
@@ -77,7 +78,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 editor = settings.edit();
                 editor.putString("theme","OrangeTheme");
                 editor.commit();
-
 
                 changeTheme(R.style.OrangeTheme);
                 break;
@@ -111,7 +111,15 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         recreate();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        settings = getSharedPreferences("myFile", MODE_PRIVATE);
+        editor = settings.edit();
+        String name = settings.getString("username", "DefaultName");
+        welcomeUser.setText("Welcome back, "+name+"!");
 
+    }
 
     @Override
     protected void onPause() {
@@ -120,10 +128,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         // All objects are from android.context.Context
         settings = getSharedPreferences("myFile", MODE_PRIVATE);
         editor = settings.edit();
-        String old_Name = settings.getString("username","");
+        String old_Name = settings.getString("username","DefaultUser");
         EditText editText = (EditText) findViewById(R.id.editText);
 
-        if(editText.getText().toString()== "") {
+        if(editText.getText().toString().equals("")) {
             editor.putString("username", old_Name.toString());
             // Commit the edits!
             editor.commit();
