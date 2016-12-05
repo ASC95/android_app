@@ -66,6 +66,9 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
     protected Double longitudeDouble;
     protected Double latitudeDouble;
     protected List<Place> mGeofenceList = new ArrayList<Place>();
+    final Handler handler = new Handler();
+    Runnable trigger;
+
     private int refreshRate = 20000;
 
     //Globals for uploading
@@ -113,14 +116,9 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         final ArrayList<UVALocation> locationList = UVALocation.getLocationsFromFile("locations.json", this);
         final MainListViewAdapter adapter = new MainListViewAdapter(this, locationList);
         mListView.setAdapter(adapter);
-
-
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-
-                //view.animate().translationZ(10.0f);
-
                 Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
                 UVALocation location = (UVALocation) parent.getItemAtPosition(position);
                 myIntent.putExtra("locationTitle", location.locationTitle);
@@ -131,7 +129,18 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
             }
         });
 
-        final Handler handler = new Handler();
+        trigger= new Runnable() {
+            @Override
+            public void run() {
+                adapter.shouldUpdate = true;
+                adapter.notifyDataSetChanged();
+                adapter.shouldUpdate = false;
+                //Toast.makeText(MainActivity.this, "Handler called", Toast.LENGTH_SHORT).show();
+                handler.postDelayed( this, refreshRate);
+            }
+        };
+
+        /*
         handler.postDelayed( new Runnable() {
             @Override
             public void run() {
@@ -144,6 +153,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
                 handler.postDelayed( this, refreshRate);
             }
         }, refreshRate );
+        */
 
         findViewById(R.id.settingsButton).setOnClickListener(this);
         findViewById(R.id.postButton).setOnClickListener(this);
@@ -277,8 +287,6 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         mGeofenceList.add(new Place("Clemons Library",  -78.5066322, 38.0363471,"Clemons_Library"));
         mGeofenceList.add(new Place("Dumpling Cart", -78.506118, 38.034069,"Dumpling_Cart"));
         //WIP places
-
-
     }
 
     @Override
@@ -292,6 +300,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
     public void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
+        handler.postDelayed(trigger, refreshRate);
     }
 
 
@@ -299,6 +308,7 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
     public void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
+        handler.removeCallbacks(trigger);
     }
 
     /**
@@ -309,8 +319,6 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
         //Getting and setting theme
         settings = getSharedPreferences("myFile", MODE_PRIVATE);
         String theme = settings.getString("theme","BlueTheme");
-
-
 
         if(theme.equals("OrangeTheme")){
             setTheme(R.style.OrangeTheme);
@@ -325,10 +333,6 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
             changeTheme(R.style.BlueTheme);
         }
         super.onResume();
-
-
-
-
 
         SharedPreferences settings = getSharedPreferences("myFile", MODE_PRIVATE);
 
