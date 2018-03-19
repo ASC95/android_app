@@ -55,6 +55,12 @@ import java.util.Map;
 
 import com.cloudinary.*;
 
+import org.w3c.dom.Document;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 public class MainActivity extends Activity implements View.OnClickListener, OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener{
 
@@ -85,13 +91,36 @@ public class MainActivity extends Activity implements View.OnClickListener, OnCo
     private ListView mListView;
 
     //Global Cloudinary api
-    protected Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-            "cloud_name", "dlw60s6pl",
-            "api_key", "181639785459231",
-            "api_secret", "reNtqzWpDj-GQ06v6cvWvKDOH90"));
+    protected Cloudinary cloudinary = getCloudinary();
+    /*protected Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "__",
+            "api_key", "__",
+            "api_secret", "__"));*/
 
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
+
+    private Cloudinary getCloudinary() {
+        Cloudinary cloudinary;
+        File file = new File("config.xml");
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+            String cloudName = document.getElementsByTagName("cloud_name").item(0).getTextContent();
+            String apiKey = document.getElementsByTagName("api_key").item(0).getTextContent();
+            String apiSecret = document.getElementsByTagName("api_secret").item(0).getTextContent();
+            cloudinary = new Cloudinary(ObjectUtils.asMap(
+                    "cloud_name", cloudName,
+                    "api_key", apiKey,
+                    "api_secret", apiSecret
+            ));
+            return cloudinary;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
