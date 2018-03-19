@@ -2,6 +2,7 @@
 *.docx
 **/wfpics
 config.xml
+.idea/
 
 # Built application files
 /*/build/
